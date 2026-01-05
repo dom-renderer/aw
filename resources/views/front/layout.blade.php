@@ -753,13 +753,114 @@
                     }
                     const badge = document.getElementById('headerCartCount');
                     if (badge) badge.textContent = count;
+                },
+                error: function() {
+                    // Fallback to localStorage
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const badge = document.getElementById('headerCartCount');
+                    if (badge) badge.textContent = cart.length;
                 }
             });
         }
+
+        function syncCartFromLocalStorage() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (!cart.length) {
+                localStorage.removeItem('cart');
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route("cart.status") }}',
+                method: 'GET',
+                success: function(resp) {
+                    if (resp?.logged_in && cart.length > 0) {
+                        $.ajax({
+                            url: '{{ route("cart.merge") }}',
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                items: cart
+                            },
+                            success: function(mergeResp) {
+                                if (mergeResp?.success) {
+                                    localStorage.removeItem('cart');
+                                    updateHeaderCartCount();
+                                    // Reload page to show synced cart
+                                    if (window.location.pathname.includes('cart')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            },
+                            error: function(xhr) {
+                                console.error('Failed to sync cart:', xhr);
+                            }
+                        });
+                    }
+                },
+                error: function() {
+                    // User might not be logged in yet, keep cart in localStorage
+                }
+            });
+        }
+
+        function syncWishlistFromLocalStorage() {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            if (!wishlist.length) {
+                localStorage.removeItem('wishlist');
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route("wishlist.status") }}',
+                method: 'GET',
+                success: function(resp) {
+                    if (resp?.logged_in && wishlist.length > 0) {
+                        $.ajax({
+                            url: '{{ route("wishlist.merge") }}',
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                items: wishlist
+                            },
+                            success: function(mergeResp) {
+                                if (mergeResp?.success) {
+                                    localStorage.removeItem('wishlist');
+                                }
+                            },
+                            error: function(xhr) {
+                                console.error('Failed to sync wishlist:', xhr);
+                            }
+                        });
+                    }
+                },
+                error: function() {
+                    // User might not be logged in yet, keep wishlist in localStorage
+                }
+            });
+        }
+
+        // Check if user just logged in and sync
+        let wasLoggedOut = localStorage.getItem('was_logged_out') === 'true';
+        let lastSyncTime = localStorage.getItem('last_cart_sync_time');
+        let now = Date.now();
+        
+        // Sync if user was logged out or if it's been more than 5 seconds since last sync
+        if (wasLoggedOut || !lastSyncTime || (now - parseInt(lastSyncTime)) > 5000) {
+            if (wasLoggedOut) {
+                localStorage.removeItem('was_logged_out');
+            }
+            localStorage.setItem('last_cart_sync_time', now.toString());
+            syncCartFromLocalStorage();
+            syncWishlistFromLocalStorage();
+        }
+
         updateHeaderCartCount();
         
         // Expose globally for other scripts to call
         window.updateHeaderCartCount = updateHeaderCartCount;
+        window.syncCartFromLocalStorage = syncCartFromLocalStorage;
+        window.syncWishlistFromLocalStorage = syncWishlistFromLocalStorage;
     });
 </script>
 

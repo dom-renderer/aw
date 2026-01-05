@@ -178,7 +178,7 @@
 
                             <!-- Bulk Pricing Table -->
                             @if($units->count() > 0)
-                            <h3 class="h-24 mb-4">Bulk Pricing</h3>
+                            <h3 class="h-24 mb-4">Pricing</h3>
                             <div class="table-responsive">
                                 <table class="table price-table text-center table-striped align-middle" id="pricingTable">
                                     <thead>
@@ -190,37 +190,75 @@
                                     </tr>
                                     </thead>
                                     <tbody id="pricingTableBody">
-                                    @forelse($tierPricings as $tier)
-                                    <tr data-unit-id="{{ $tier['product_additional_unit_id'] }}" 
-                                        data-unit-type="{{ $tier['unit_type'] }}"
-                                        data-min="{{ $tier['min_qty'] }}" 
-                                        data-max="{{ $tier['max_qty'] }}"
-                                        data-price="{{ $tier['your_price'] }}">
-                                        <td>
-                                            @if($tier['max_qty'] > 0)
-                                                {{ number_format($tier['min_qty']) }}–{{ number_format($tier['max_qty']) }}
-                                            @else
-                                                {{ number_format($tier['min_qty']) }}+
+                                    @php
+                                        $pricingByUnit = $tierPricings->groupBy('product_additional_unit_id');
+                                    @endphp
+                                    @foreach($units as $unit)
+                                        @php
+                                            $unitPricings = $pricingByUnit->get($unit['id'], collect());
+                                            $unitPricingType = $unit['pricing_type'] ?? 'tier';
+                                        @endphp
+                                        @if($unitPricingType == 'tier' && $unitPricings->where('pricing_type', 'tier')->count() > 0)
+                                            @foreach($unitPricings->where('pricing_type', 'tier') as $tier)
+                                            <tr data-unit-id="{{ $tier['product_additional_unit_id'] }}" 
+                                                data-unit-type="{{ $tier['unit_type'] }}"
+                                                data-min="{{ $tier['min_qty'] }}" 
+                                                data-max="{{ $tier['max_qty'] }}"
+                                                data-price="{{ $tier['your_price'] }}"
+                                                data-pricing-type="tier">
+                                                <td>
+                                                    @if(isset($tier['max_qty']) && $tier['max_qty'] > 0)
+                                                        {{ number_format($tier['min_qty']) }}–{{ number_format($tier['max_qty']) }}
+                                                    @else
+                                                        {{ number_format($tier['min_qty']) }}+
+                                                    @endif
+                                                </td>
+                                                <td>${{ number_format($tier['mrp'], 2) }}</td>
+                                                <td>${{ number_format($tier['your_price'], 2) }}</td>
+                                                <td>
+                                                    @if($tier['discount_amount'] > 0)
+                                                        ${{ number_format($tier['discount_amount'], 2) }}
+                                                        @if($tier['discount_type'] == 1)
+                                                            ({{ number_format($tier['discount_value']) }}%)
+                                                        @endif
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @elseif($unitPricingType == 'non-tier')
+                                            @php
+                                                $nonTierPrice = $unitPricings->where('pricing_type', 'non-tier')->first();
+                                            @endphp
+                                            @if($nonTierPrice)
+                                            <tr data-unit-id="{{ $unit['id'] }}" 
+                                                data-unit-type="{{ $unit['unit_type'] }}"
+                                                data-price="{{ $nonTierPrice['your_price'] }}"
+                                                data-pricing-type="non-tier"
+                                                class="non-tier-pricing-row">
+                                                <td>Any Quantity</td>
+                                                <td>${{ number_format($nonTierPrice['mrp'], 2) }}</td>
+                                                <td>${{ number_format($nonTierPrice['your_price'], 2) }}</td>
+                                                <td>
+                                                    @if($nonTierPrice['discount_amount'] > 0)
+                                                        ${{ number_format($nonTierPrice['discount_amount'], 2) }}
+                                                        @if($nonTierPrice['discount_type'] == 1)
+                                                            ({{ number_format($nonTierPrice['discount_value']) }}%)
+                                                        @endif
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
                                             @endif
-                                        </td>
-                                        <td>${{ number_format($tier['mrp'], 2) }}</td>
-                                        <td>${{ number_format($tier['your_price'], 2) }}</td>
-                                        <td>
-                                            @if($tier['discount_amount'] > 0)
-                                                ${{ number_format($tier['discount_amount'], 2) }}
-                                                @if($tier['discount_type'] == 1)
-                                                    ({{ number_format($tier['discount_value']) }}%)
-                                                @endif
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @empty
+                                        @endif
+                                    @endforeach
+                                    @if($tierPricings->isEmpty())
                                     <tr>
-                                        <td colspan="4">No pricing tiers available</td>
+                                        <td colspan="4">No pricing available</td>
                                     </tr>
-                                    @endforelse
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -244,6 +282,7 @@
                                         <option value="{{ $unit['id'] }}" 
                                                 data-unit-type="{{ $unit['unit_type'] }}"
                                                 data-unit-id="{{ $unit['unit_id'] }}"
+                                                data-pricing-type="{{ $unit['pricing_type'] ?? 'tier' }}"
                                                 @if($unit['is_default']) selected @endif>
                                             {{ $unit['title'] }}
                                         </option>
@@ -482,22 +521,30 @@
 
             let unitId = selectedOption.val();
             let unitType = selectedOption.data('unit-type');
+            let pricingType = selectedOption.data('pricing-type') || 'tier';
 
             // Remove existing highlights
             $('#pricingTableBody tr').removeClass('highlight-row table-primary');
 
-            // Find matching tier
+            // Find matching tier or non-tier pricing
             $('#pricingTableBody tr').each(function() {
                 let row = $(this);
                 let rowUnitId = row.data('unit-id');
                 let rowUnitType = row.data('unit-type');
-                let minQty = parseFloat(row.data('min'));
-                let maxQty = parseFloat(row.data('max'));
+                let rowPricingType = row.data('pricing-type') || 'tier';
 
-                // Check if unit matches and quantity is within range
+                // Check if unit matches
                 if (rowUnitId == unitId && rowUnitType == unitType) {
-                    if (qty >= minQty && (maxQty === 0 || qty <= maxQty)) {
+                    if (rowPricingType === 'non-tier') {
+                        // Non-tier pricing - always highlight
                         row.addClass('highlight-row table-primary');
+                    } else {
+                        // Tier pricing - check quantity range
+                        let minQty = parseFloat(row.data('min')) || 0;
+                        let maxQty = parseFloat(row.data('max')) || 0;
+                        if (qty >= minQty && (maxQty === 0 || qty <= maxQty)) {
+                            row.addClass('highlight-row table-primary');
+                        }
                     }
                 }
             });
@@ -823,6 +870,33 @@
                 }
             });
         }
+
+        // Sync cart and wishlist on login
+        function syncOnLogin() {
+            if (typeof window.syncCartFromLocalStorage === 'function') {
+                window.syncCartFromLocalStorage();
+            }
+            if (typeof window.syncWishlistFromLocalStorage === 'function') {
+                window.syncWishlistFromLocalStorage();
+            }
+        }
+
+        // Check login status periodically and sync if needed
+        setInterval(function() {
+            $.ajax({
+                url: '{{ route("cart.status") }}',
+                method: 'GET',
+                success: function(resp) {
+                    if (resp?.logged_in) {
+                        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                        if (cart.length > 0 || wishlist.length > 0) {
+                            syncOnLogin();
+                        }
+                    }
+                }
+            });
+        }, 2000); // Check every 2 seconds
 
         // Initial check
         checkCartStatus();

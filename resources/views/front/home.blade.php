@@ -163,43 +163,43 @@
 
                 @forelse($topSellingProduct as $tsp)
                     <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
-                        <div class="product-box">
+                        <div class="product-box" data-product-short-url="{{ $tsp->short_url }}">
                             <img src="{{ asset('storage/' . $tsp?->primaryImage?->file) }}" class="w-100 ofc-h250" alt="{{ $tsp->name }}">
                             <h3 class="h-20 mt-3 mb-3">{{ $tsp->name }}</h3>
                             <div class="price-bxm">
                                 <span class="text-offer">$24.99</span>
                                 <div class="bulk-div">
                                     <span>$89.99</span>
-                                    <a href="" class="bulk-pr btn">Bulk Pricing</a>
+                                    <a href="{{ route('product.index', ['product_slug' => $tsp->slug, 'short_url' => $tsp->short_url]) }}" class="bulk-pr btn">Bulk Pricing</a>
                                 </div>
                                 <p class="p-18 mt-2 mb-3">Min Order: 5 boxes</p>
                             </div>
 
-
-
                             <!-- Wrap the button + cart replacement inside this wrapper -->
                             <div class="cart-toggle-wrapper">
-                                <!-- Add to Cart button (can be <a> or <button>) -->
-                                <a href="" class="btn cart-btn d-block" id="addToCartBtn">Add to Cart</a>
+                                <!-- Add to Cart button -->
+                                <a href="{{ route('product.index', ['product_slug' => $tsp->slug, 'short_url' => $tsp->short_url]) }}" class="btn cart-btn d-block home-add-to-cart-btn" 
+                                   data-product-short-url="{{ $tsp->short_url }}"
+                                   data-product-slug="{{ $tsp->slug }}">Add to Cart</a>
 
                                 <!-- Replacement cart UI that appears after clicking Add to Cart -->
-                                <div class="cart-home" aria-hidden="true">
+                                <div class="cart-home" aria-hidden="true" style="display: none;">
                                     <div class="cart-all-dtl">
                                         <div class="col-auto">
                                             <div class="input-group quantity-group">
-                                                <button class="btn btn-outline-secondary btn-minus"
+                                                <button class="btn btn-outline-secondary btn-minus home-cart-minus"
                                                     type="button">−</button>
-                                                <input type="text" class="form-control text-center quantity-value"
-                                                    value="1" id="quantity" readonly>
-                                                <button class="btn btn-outline-secondary btn-plus"
+                                                <input type="text" class="form-control text-center quantity-value home-cart-qty"
+                                                    value="1" readonly>
+                                                <button class="btn btn-outline-secondary btn-plus home-cart-plus"
                                                     type="button">+</button>
                                             </div>
                                         </div>
                                         <div class="cart-pra">
-                                            <p class="h-24 price-value">$89.99</p>
+                                            <p class="h-24 price-value home-cart-price">$0.00</p>
                                             <p class="p-18">Total</p>
                                         </div>
-                                        <div class="cart-delete" role="button" title="Remove from cart">
+                                        <div class="cart-delete home-cart-remove" role="button" title="Remove from cart">
                                             <img src="{{ asset('front-theme/images/cart-delete.png') }}" alt="Delete"
                                                 class="cart-delete-img">
                                         </div>
@@ -308,6 +308,169 @@
     <script src="{{ asset('front-theme/js/bootstrap-min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
+    <script>
+        // Home page cart functionality
+        $(document).ready(function() {
+            // Check cart status for each product on home page
+            function checkHomeProductCartStatus() {
+                $('.product-box').each(function() {
+                    const $box = $(this);
+                    const productShortUrl = $box.data('product-short-url');
+                    if (!productShortUrl) return;
+
+                    $.ajax({
+                        url: '{{ route("cart.status") }}',
+                        method: 'GET',
+                        success: function(resp) {
+                            if (resp?.logged_in) {
+                                const item = (resp.items || []).find(function(x) {
+                                    return x.product_short_url === productShortUrl && !x.product_variant_short_url;
+                                });
+                                if (item) {
+                                    showHomeCartControls($box, item.quantity);
+                                }
+                            } else {
+                                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                                const item = cart.find(function(x) {
+                                    return x.product_short_url === productShortUrl && !x.product_variant_short_url;
+                                });
+                                if (item) {
+                                    showHomeCartControls($box, item.quantity);
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+
+            function showHomeCartControls($box, qty) {
+                $box.find('.home-add-to-cart-btn').hide();
+                $box.find('.cart-home').show().attr('aria-hidden', 'false');
+                $box.find('.home-cart-qty').val(qty);
+            }
+
+            function hideHomeCartControls($box) {
+                $box.find('.home-add-to-cart-btn').show();
+                $box.find('.cart-home').hide().attr('aria-hidden', 'true');
+            }
+
+            // Add to cart from home page
+            $(document).on('click', '.home-add-to-cart-btn', function(e) {
+                e.preventDefault();
+                const $btn = $(this);
+                const productShortUrl = $btn.data('product-short-url');
+                const $box = $btn.closest('.product-box');
+
+                $.ajax({
+                    url: '{{ route("cart.status") }}',
+                    method: 'GET',
+                    success: function(resp) {
+                        if (resp?.logged_in) {
+                            // Redirect to product page for logged in users (they need to select unit)
+                            window.location.href = $btn.attr('href');
+                        } else {
+                            // For guests, add to localStorage with default unit
+                            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                            const existingIndex = cart.findIndex(function(x) {
+                                return x.product_short_url === productShortUrl && !x.product_variant_short_url;
+                            });
+
+                            if (existingIndex >= 0) {
+                                cart[existingIndex].quantity += 1;
+                            } else {
+                                cart.push({
+                                    product_short_url: productShortUrl,
+                                    product_variant_short_url: null,
+                                    unit_type: null,
+                                    unit_id: null,
+                                    quantity: 1
+                                });
+                            }
+
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                            showHomeCartControls($box, cart[existingIndex >= 0 ? existingIndex : cart.length - 1].quantity);
+                            if (typeof window.updateHeaderCartCount === 'function') {
+                                window.updateHeaderCartCount();
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Home cart quantity controls
+            $(document).on('click', '.home-cart-plus', function() {
+                const $box = $(this).closest('.product-box');
+                const $qtyInput = $box.find('.home-cart-qty');
+                const newQty = parseInt($qtyInput.val()) + 1;
+                $qtyInput.val(newQty);
+                updateHomeCartQuantity($box, newQty);
+            });
+
+            $(document).on('click', '.home-cart-minus', function() {
+                const $box = $(this).closest('.product-box');
+                const $qtyInput = $box.find('.home-cart-qty');
+                let newQty = parseInt($qtyInput.val()) - 1;
+                if (newQty < 1) newQty = 1;
+                $qtyInput.val(newQty);
+                updateHomeCartQuantity($box, newQty);
+            });
+
+            $(document).on('click', '.home-cart-remove', function() {
+                const $box = $(this).closest('.product-box');
+                const productShortUrl = $box.data('product-short-url');
+                
+                $.ajax({
+                    url: '{{ route("cart.status") }}',
+                    method: 'GET',
+                    success: function(resp) {
+                        if (resp?.logged_in) {
+                            // For logged in, redirect to product page
+                            window.location.href = $box.find('.home-add-to-cart-btn').attr('href');
+                        } else {
+                            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                            const filtered = cart.filter(function(x) {
+                                return !(x.product_short_url === productShortUrl && !x.product_variant_short_url);
+                            });
+                            localStorage.setItem('cart', JSON.stringify(filtered));
+                            hideHomeCartControls($box);
+                            if (typeof window.updateHeaderCartCount === 'function') {
+                                window.updateHeaderCartCount();
+                            }
+                        }
+                    }
+                });
+            });
+
+            function updateHomeCartQuantity($box, qty) {
+                const productShortUrl = $box.data('product-short-url');
+                
+                $.ajax({
+                    url: '{{ route("cart.status") }}',
+                    method: 'GET',
+                    success: function(resp) {
+                        if (resp?.logged_in) {
+                            // Redirect to product page for quantity update
+                            window.location.href = $box.find('.home-add-to-cart-btn').attr('href');
+                        } else {
+                            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                            const item = cart.find(function(x) {
+                                return x.product_short_url === productShortUrl && !x.product_variant_short_url;
+                            });
+                            if (item) {
+                                item.quantity = qty;
+                                localStorage.setItem('cart', JSON.stringify(cart));
+                                if (typeof window.updateHeaderCartCount === 'function') {
+                                    window.updateHeaderCartCount();
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Initial check
+            checkHomeProductCartStatus();
+        });
     </script>
     <script>
         const productImageUrl = "{{ asset('storage') }}";

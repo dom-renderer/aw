@@ -15,6 +15,7 @@ Route::get('/p/{product_slug}/{short_url}/{variant?}', [\App\Http\Controllers\Fr
 Route::get('/s', [\App\Http\Controllers\FrontendController::class, 'search'])->name('search');
 Route::post('p-ref', [\App\Http\Controllers\FrontendController::class, 'getVariantByAttributes'])->name('product.getVariant');
 Route::post('product/pricing', [\App\Http\Controllers\FrontendController::class, 'getProductPricingData'])->name('product.pricing');
+Route::post('cart/product-details', [\App\Http\Controllers\FrontendController::class, 'getCartProductDetails'])->name('cart.product.details');
 Route::get('switch-account', [\App\Http\Controllers\FrontendController::class, 'switchAccount'])->name('switch-account');
 Route::get('remove-account/{id}', [\App\Http\Controllers\FrontendController::class, 'removeAccount'])->name('remove-account');
 Route::get('add-new-account', [\App\Http\Controllers\FrontendController::class, 'addNewAccount'])->name('add-new-account');

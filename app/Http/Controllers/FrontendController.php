@@ -481,6 +481,7 @@ class FrontendController extends Controller
                         'unit_id' => $baseUnit->unit_id,
                         'title' => $baseUnit->unit->title ?? 'Unit',
                         'is_default' => (bool) $baseUnit->is_default_selling_unit,
+                        'pricing_type' => $baseUnit->pricing_type ?? 'tier',
                     ];
                 }
 
@@ -492,6 +493,7 @@ class FrontendController extends Controller
                         'title' => $addUnit->unit->title ?? 'Unit',
                         'quantity' => (float) $addUnit->quantity,
                         'is_default' => (bool) $addUnit->is_default_selling_unit,
+                        'pricing_type' => $addUnit->pricing_type ?? 'tier',
                     ];
                 }
 
@@ -524,8 +526,39 @@ class FrontendController extends Controller
                             'discount_amount' => $discountAmount,
                             'discount_type' => (int) $tier->discount_type,
                             'discount_value' => (float) $tier->discount_amount,
+                            'pricing_type' => 'tier',
                         ];
                     });
+
+                // Get non-tier pricing for this variant
+                $nonTierPricings = \App\Models\ProductUnitPrice::where('product_id', $product->id)
+                    ->where('product_variant_id', $variantModel->id)
+                    ->get()
+                    ->map(function ($price) {
+                        $mrp = (float) $price->price_per_unit;
+                        $discountAmount = 0;
+                        if ($price->discount_type == 1) { // Percentage
+                            $discountAmount = $mrp * ($price->discount_amount / 100);
+                        } else { // Fixed
+                            $discountAmount = (float) $price->discount_amount;
+                        }
+                        $yourPrice = max(0, $mrp - $discountAmount);
+
+                        return [
+                            'id' => $price->id,
+                            'unit_type' => (int) $price->unit_type,
+                            'product_additional_unit_id' => $price->product_additional_unit_id,
+                            'mrp' => $mrp,
+                            'your_price' => $yourPrice,
+                            'discount_amount' => $discountAmount,
+                            'discount_type' => (int) $price->discount_type,
+                            'discount_value' => (float) $price->discount_amount,
+                            'pricing_type' => 'non-tier',
+                        ];
+                    });
+
+                // Merge tier and non-tier pricing
+                $tierPricings = $tierPricings->merge($nonTierPricings);
 
                 // Get total inventory stock (sum across all warehouses)
 
@@ -559,6 +592,7 @@ class FrontendController extends Controller
                     'unit_id' => $baseUnit->unit_id,
                     'title' => $baseUnit->unit->title ?? 'Unit',
                     'is_default' => (bool) $baseUnit->is_default_selling_unit,
+                    'pricing_type' => $baseUnit->pricing_type ?? 'tier',
                 ];
             }
 
@@ -570,6 +604,7 @@ class FrontendController extends Controller
                     'title' => $addUnit->unit->title ?? 'Unit',
                     'quantity' => (float) $addUnit->quantity,
                     'is_default' => (bool) $addUnit->is_default_selling_unit,
+                    'pricing_type' => $addUnit->pricing_type ?? 'tier',
                 ];
             }
 
@@ -602,8 +637,39 @@ class FrontendController extends Controller
                         'discount_amount' => $discountAmount,
                         'discount_type' => (int) $tier->discount_type,
                         'discount_value' => (float) $tier->discount_amount,
+                        'pricing_type' => 'tier',
                     ];
                 });
+
+            // Get non-tier pricing for simple product
+            $nonTierPricings = \App\Models\ProductUnitPrice::where('product_id', $product->id)
+                ->whereNull('product_variant_id')
+                ->get()
+                ->map(function ($price) {
+                    $mrp = (float) $price->price_per_unit;
+                    $discountAmount = 0;
+                    if ($price->discount_type == 1) { // Percentage
+                        $discountAmount = $mrp * ($price->discount_amount / 100);
+                    } else { // Fixed
+                        $discountAmount = (float) $price->discount_amount;
+                    }
+                    $yourPrice = max(0, $mrp - $discountAmount);
+
+                    return [
+                        'id' => $price->id,
+                        'unit_type' => (int) $price->unit_type,
+                        'product_additional_unit_id' => $price->product_additional_unit_id,
+                        'mrp' => $mrp,
+                        'your_price' => $yourPrice,
+                        'discount_amount' => $discountAmount,
+                        'discount_type' => (int) $price->discount_type,
+                        'discount_value' => (float) $price->discount_amount,
+                        'pricing_type' => 'non-tier',
+                    ];
+                });
+
+            // Merge tier and non-tier pricing
+            $tierPricings = $tierPricings->merge($nonTierPricings);
 
             // Get total inventory stock for simple product
             $totalStock = Inventory::where('product_id', $product->id)
@@ -668,6 +734,65 @@ class FrontendController extends Controller
     }
 
     /**
+     * Get product details for cart items (for guest cart display)
+     */
+    public function getCartProductDetails(Request $request)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.product_short_url' => 'required|string',
+            'items.*.product_variant_short_url' => 'nullable|string',
+            'items.*.unit_id' => 'nullable|integer',
+            'items.*.unit_type' => 'nullable|integer',
+        ]);
+
+        $items = $request->input('items', []);
+        $results = [];
+
+        foreach ($items as $item) {
+            $product = Product::where('short_url', $item['product_short_url'])->first();
+            if (!$product) continue;
+
+            $variantId = null;
+            if (!empty($item['product_variant_short_url'])) {
+                $variant = ProductVariant::where('product_id', $product->id)
+                    ->where('short_url', $item['product_variant_short_url'])
+                    ->first();
+                if ($variant) {
+                    $variantId = $variant->id;
+                }
+            }
+
+            $unitId = $item['unit_id'] ?? null;
+            $unitType = $item['unit_type'] ?? null;
+            $quantity = $item['quantity'] ?? 1;
+
+            $price = $this->calculateCartItemPrice(
+                $product->id,
+                $variantId,
+                $unitType,
+                $unitId,
+                $quantity
+            );
+
+            $results[] = [
+                'product_short_url' => $item['product_short_url'],
+                'product_variant_short_url' => $item['product_variant_short_url'] ?? null,
+                'unit_id' => $unitId,
+                'unit_type' => $unitType,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'variant_name' => $variant ? $variant->name : null,
+                'image' => $product->primaryImage ? asset('storage/' . $product->primaryImage->file) : asset('front-theme/images/cart-1.png'),
+                'price' => $price['price_per_unit'],
+                'total' => $price['total'],
+            ];
+        }
+
+        return response()->json(['success' => true, 'items' => $results]);
+    }
+
+    /**
      * Get product pricing data for AJAX updates.
      * Returns tier pricing and inventory for a specific variant and unit.
      */
@@ -708,6 +833,8 @@ class FrontendController extends Controller
 
         if ($variantId) {
             $tierQuery->where('product_variant_id', $variantId);
+        } else {
+            $tierQuery->whereNull('product_variant_id');
         }
 
         if ($unitType !== null) {
@@ -742,8 +869,53 @@ class FrontendController extends Controller
                     'discount_amount' => $discountAmount,
                     'discount_type' => (int) $tier->discount_type,
                     'discount_value' => (float) $tier->discount_amount,
+                    'pricing_type' => 'tier',
                 ];
             });
+
+        // Get non-tier pricing
+        $nonTierQuery = \App\Models\ProductUnitPrice::where('product_id', $product->id);
+        
+        if ($variantId) {
+            $nonTierQuery->where('product_variant_id', $variantId);
+        } else {
+            $nonTierQuery->whereNull('product_variant_id');
+        }
+
+        if ($unitType !== null) {
+            $nonTierQuery->where('unit_type', $unitType);
+        }
+
+        if ($unitId !== null) {
+            $nonTierQuery->where('product_additional_unit_id', $unitId);
+        }
+
+        $nonTierPricings = $nonTierQuery->get()
+            ->map(function ($price) {
+                $mrp = (float) $price->price_per_unit;
+                $discountAmount = 0;
+                if ($price->discount_type == 1) { // Percentage
+                    $discountAmount = $mrp * ($price->discount_amount / 100);
+                } else { // Fixed
+                    $discountAmount = (float) $price->discount_amount;
+                }
+                $yourPrice = max(0, $mrp - $discountAmount);
+
+                return [
+                    'id' => $price->id,
+                    'unit_type' => (int) $price->unit_type,
+                    'product_additional_unit_id' => $price->product_additional_unit_id,
+                    'mrp' => $mrp,
+                    'your_price' => $yourPrice,
+                    'discount_amount' => $discountAmount,
+                    'discount_type' => (int) $price->discount_type,
+                    'discount_value' => (float) $price->discount_amount,
+                    'pricing_type' => 'non-tier',
+                ];
+            });
+
+        // Merge tier and non-tier pricing
+        $tierPricings = $tierPricings->merge($nonTierPricings);
 
         // Get inventory stock
         $stockQuery = Inventory::where('product_id', $product->id);
@@ -1119,7 +1291,18 @@ class FrontendController extends Controller
                 ->first();
 
             if ($cart) {
-                $cartItems = $cart->items;
+                $cartItems = $cart->items->map(function ($item) {
+                    $price = $this->calculateCartItemPrice(
+                        $item->product_id,
+                        $item->product_variant_id,
+                        $item->unit_type,
+                        $item->unit_id,
+                        $item->quantity
+                    );
+                    $item->calculated_price = $price['price_per_unit'];
+                    $item->calculated_total = $price['total'];
+                    return $item;
+                });
             }
         }
 
@@ -1127,6 +1310,70 @@ class FrontendController extends Controller
             'loggedIn'  => $loggedIn,
             'cartItems' => $cartItems,
         ]);
+    }
+
+    /**
+     * Calculate price for a cart item based on quantity and unit
+     * Returns price considering both tier and non-tier pricing
+     */
+    private function calculateCartItemPrice($productId, $variantId, $unitType, $unitId, $quantity)
+    {
+        $product = Product::find($productId);
+        if (!$product) {
+            return ['price_per_unit' => 0, 'total' => 0];
+        }
+
+        // Check if unit has non-tier pricing
+        $nonTierPrice = \App\Models\ProductUnitPrice::where('product_id', $productId)
+            ->where('product_variant_id', $variantId)
+            ->where('unit_type', $unitType)
+            ->where('product_additional_unit_id', $unitId)
+            ->first();
+
+        if ($nonTierPrice) {
+            $mrp = (float) $nonTierPrice->price_per_unit;
+            $discountAmount = 0;
+            if ($nonTierPrice->discount_type == 1) { // Percentage
+                $discountAmount = $mrp * ($nonTierPrice->discount_amount / 100);
+            } else { // Fixed
+                $discountAmount = (float) $nonTierPrice->discount_amount;
+            }
+            $pricePerUnit = max(0, $mrp - $discountAmount);
+            return [
+                'price_per_unit' => $pricePerUnit,
+                'total' => $pricePerUnit * $quantity
+            ];
+        }
+
+        // Check tier pricing
+        $tierPricing = ProductTierPricing::where('product_id', $productId)
+            ->where('product_variant_id', $variantId)
+            ->where('unit_type', $unitType)
+            ->where('product_additional_unit_id', $unitId)
+            ->where('min_qty', '<=', $quantity)
+            ->where(function($query) use ($quantity) {
+                $query->where('max_qty', '>=', $quantity)
+                      ->orWhere('max_qty', 0);
+            })
+            ->orderBy('min_qty', 'desc')
+            ->first();
+
+        if ($tierPricing) {
+            $mrp = (float) $tierPricing->price_per_unit;
+            $discountAmount = 0;
+            if ($tierPricing->discount_type == 1) { // Percentage
+                $discountAmount = $mrp * ($tierPricing->discount_amount / 100);
+            } else { // Fixed
+                $discountAmount = (float) $tierPricing->discount_amount;
+            }
+            $pricePerUnit = max(0, $mrp - $discountAmount);
+            return [
+                'price_per_unit' => $pricePerUnit,
+                'total' => $pricePerUnit * $quantity
+            ];
+        }
+
+        return ['price_per_unit' => 0, 'total' => 0];
     }
 
     /**

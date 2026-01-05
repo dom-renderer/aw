@@ -30,7 +30,9 @@
                                         <div class="c-lft-box bdr-clr cart-item-row"
                                              data-item-id="{{ $item->id }}"
                                              data-product-short-url="{{ $product?->short_url }}"
-                                             data-variant-short-url="{{ $variant?->short_url }}">
+                                             data-variant-short-url="{{ $variant?->short_url }}"
+                                             data-unit-id="{{ $item->unit_id }}"
+                                             data-unit-type="{{ $item->unit_type }}">
                                             <div class="row align-items-center">
                                                 <div class="col-lg-12 col-xl-12 col-xxl-8 col-md-6">
                                                     <div class="d-flex gap-4 align-items-center">
@@ -69,9 +71,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="cart-pra">
-                                                            <p class="h-24 cart-item-price">
-                                                                <!-- Price calculation can be wired when pricing is available -->
-                                                                -
+                                                            <p class="h-24 cart-item-price" data-unit-price="{{ $item->calculated_price ?? 0 }}">
+                                                                ${{ number_format(($item->calculated_total ?? 0), 2) }}
                                                             </p>
                                                             <p class="p-18">Total</p>
                                                         </div>
@@ -341,8 +342,12 @@
             container.className = 'c-lft-box bdr-clr cart-item-row';
             container.dataset.productShortUrl = item.product_short_url || '';
             container.dataset.variantShortUrl = item.product_variant_short_url || '';
+            container.dataset.unitId = item.unit_id || '';
+            container.dataset.unitType = item.unit_type || '';
 
             const quantity = Number(item.quantity) || 1;
+            const unitPrice = Number(item.price) || 0;
+            const totalPrice = unitPrice * quantity;
 
             container.innerHTML = `
                 <div class="row align-items-center">
@@ -354,6 +359,7 @@
                             <div class="cart-details">
                                 <h3 class="h-24 mb-2">${item.name || 'Product'}</h3>
                                 ${item.sku ? `<p class="p-18 mb-2">SKU: ${item.sku}</p>` : ''}
+                                ${item.variant_name ? `<p class="p-18 mb-2">Variant: ${item.variant_name}</p>` : ''}
                             </div>
                         </div>
                     </div>
@@ -367,8 +373,8 @@
                                 </div>
                             </div>
                             <div class="cart-pra">
-                                <p class="h-24 cart-item-price" data-unit-price="${Number(item.price) || 0}">
-                                    ${formatMoney((Number(item.price) || 0) * quantity)}
+                                <p class="h-24 cart-item-price" data-unit-price="${unitPrice}">
+                                    ${formatMoney(totalPrice)}
                                 </p>
                                 <p class="p-18">Total</p>
                             </div>
@@ -383,15 +389,65 @@
             return container;
         }
 
-        function renderGuestCart() {
+        async function fetchCartProductDetails(items) {
+            try {
+                const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+                const response = await fetch('{{ route("cart.product.details") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({items: items})
+                });
+                const data = await response.json();
+                if (data.success && data.items) {
+                    return data.items;
+                }
+            } catch (e) {
+                console.error('Failed to fetch product details:', e);
+            }
+            return [];
+        }
+
+        async function renderGuestCart() {
             const container = document.getElementById('cartItemsContainer');
             if (!container) return;
 
             const items = readGuestCart();
             container.innerHTML = '';
 
+            if (items.length === 0) {
+                container.innerHTML = '<div class="text-center py-5"><p class="p-18">Your cart is empty</p></div>';
+                recalcSummaryFromDom();
+                return;
+            }
+
+            // Fetch product details
+            const productDetails = await fetchCartProductDetails(items);
+            const detailsMap = {};
+            productDetails.forEach(detail => {
+                const key = `${detail.product_short_url}_${detail.product_variant_short_url || ''}_${detail.unit_id || ''}`;
+                detailsMap[key] = detail;
+            });
+
+            // Render items with product details
             items.forEach(item => {
-                container.appendChild(buildGuestCartRow(item));
+                const key = `${item.product_short_url}_${item.product_variant_short_url || ''}_${item.unit_id || ''}`;
+                const detail = detailsMap[key] || {};
+                
+                const itemWithDetails = {
+                    ...item,
+                    name: detail.name || item.name || 'Product',
+                    sku: detail.sku || item.sku || '',
+                    variant_name: detail.variant_name || '',
+                    image: detail.image || item.image || '{{ asset('front-theme/images/cart-1.png') }}',
+                    price: detail.price || item.price || 0,
+                };
+                
+                const row = buildGuestCartRow(itemWithDetails);
+                container.appendChild(row);
             });
 
             attachRowHandlers();
@@ -437,10 +493,29 @@
             if (loggedIn) {
                 const itemId = row.dataset.itemId;
                 if (itemId) {
-                    updateServerCartItem(itemId, next);
+                    updateServerCartItem(itemId, next, function() {
+                        // Reload page to get updated pricing
+                        window.location.reload();
+                    });
                 }
             } else {
                 updateGuestCartItemFromRow(row, next);
+                // Recalculate price for guest cart
+                const productShortUrl = row.dataset.productShortUrl;
+                const variantShortUrl = row.dataset.variantShortUrl || '';
+                const unitId = row.dataset.unitId || '';
+                const unitType = row.dataset.unitType || '';
+                
+                fetchProductDetails(productShortUrl, variantShortUrl, unitId, unitType).then(price => {
+                    if (price > 0) {
+                        const priceEl = row.querySelector('.cart-item-price');
+                        if (priceEl) {
+                            priceEl.dataset.unitPrice = price;
+                            priceEl.textContent = formatMoney(price * next);
+                        }
+                        recalcSummaryFromDom();
+                    }
+                });
             }
 
             recalcSummaryFromDom();
@@ -466,12 +541,14 @@
         function updateGuestCartItemFromRow(row, quantity) {
             const pShort = row.dataset.productShortUrl || '';
             const vShort = row.dataset.variantShortUrl || '';
+            const unitId = row.dataset.unitId || '';
             const items = readGuestCart();
 
             const updated = items.map(item => {
                 if (
                     (item.product_short_url || '') === pShort &&
-                    (item.product_variant_short_url || '') === vShort
+                    (item.product_variant_short_url || '') === vShort &&
+                    String(item.unit_id || '') === String(unitId)
                 ) {
                     return Object.assign({}, item, {quantity});
                 }
@@ -479,22 +556,26 @@
             });
 
             writeGuestCart(updated);
+            recalcSummaryFromDom();
         }
 
         function removeGuestCartItemFromRow(row) {
             const pShort = row.dataset.productShortUrl || '';
             const vShort = row.dataset.variantShortUrl || '';
+            const unitId = row.dataset.unitId || '';
             const items = readGuestCart().filter(item => {
                 return !(
                     (item.product_short_url || '') === pShort &&
-                    (item.product_variant_short_url || '') === vShort
+                    (item.product_variant_short_url || '') === vShort &&
+                    String(item.unit_id || '') === String(unitId)
                 );
             });
 
             writeGuestCart(items);
+            recalcSummaryFromDom();
         }
 
-        function updateServerCartItem(itemId, quantity) {
+        function updateServerCartItem(itemId, quantity, onSuccess) {
             const token = document
                 .querySelector('meta[name="csrf-token"]')
                 ?.getAttribute('content');
@@ -507,7 +588,13 @@
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify({quantity}),
-            }).catch(() => {
+            })
+            .then(resp => {
+                if (resp.ok && typeof onSuccess === 'function') {
+                    onSuccess();
+                }
+            })
+            .catch(() => {
                 // ignore errors; UI is already updated
             });
         }
@@ -537,10 +624,32 @@
                 });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             if (!loggedIn) {
-                renderGuestCart();
+                await renderGuestCart();
             } else {
+                // Sync localStorage cart on login
+                const localCart = readGuestCart();
+                if (localCart.length > 0) {
+                    try {
+                        const response = await fetch('{{ route("cart.merge") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({items: localCart})
+                        });
+                        if (response.ok) {
+                            writeGuestCart([]);
+                            window.location.reload();
+                            return;
+                        }
+                    } catch (e) {
+                        console.error('Failed to sync cart:', e);
+                    }
+                }
                 // Logged-in cart is already rendered from server; just bind handlers
                 attachRowHandlers();
                 recalcSummaryFromDom();
