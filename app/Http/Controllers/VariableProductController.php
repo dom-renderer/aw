@@ -578,6 +578,8 @@ class VariableProductController extends Controller
 
             case 4:
                 $product = Product::findOrFail($id);
+                
+                // Get tier pricing items
                 $payload = $request->input('tier_pricings');
                 $items = [];
                 if ($payload) {
@@ -590,8 +592,34 @@ class VariableProductController extends Controller
                     }
                 }
 
-                $request->merge(['_tier_items' => $items]);
+                // Get non-tier pricing items
+                $nonTierPayload = $request->input('non_tier_pricings');
+                $nonTierItems = [];
+                if ($nonTierPayload) {
+                    try {
+                        $decoded = is_array($nonTierPayload) ? $nonTierPayload : json_decode($nonTierPayload, true);
+                        if (is_array($decoded)) {
+                            $nonTierItems = $decoded;
+                        }
+                    } catch (\Throwable $th) {
+                    }
+                }
 
+                // Get pricing types
+                $pricingTypesPayload = $request->input('pricing_types');
+                $pricingTypes = [];
+                if ($pricingTypesPayload) {
+                    try {
+                        $decoded = is_array($pricingTypesPayload) ? $pricingTypesPayload : json_decode($pricingTypesPayload, true);
+                        if (is_array($decoded)) {
+                            $pricingTypes = $decoded;
+                        }
+                    } catch (\Throwable $th) {
+                    }
+                }
+
+                // Validate tier pricing items
+                $request->merge(['_tier_items' => $items]);
                 $request->validate([
                     '_tier_items' => 'nullable|array',
                     '_tier_items.*.product_variant_id' => 'required|integer|exists:product_variants,id',
@@ -603,11 +631,18 @@ class VariableProductController extends Controller
                     '_tier_items.*.discount_amount' => 'nullable|numeric|min:0',
                 ]);
 
-                if (empty($items)) {
-                    return redirect()->route('product-management', ['type' => encrypt($type), 'step' => encrypt(5), 'id' => encrypt($product->id)])
-                        ->with('success', 'Data saved successfully');
-                }
+                // Validate non-tier pricing items
+                $request->merge(['_non_tier_items' => $nonTierItems]);
+                $request->validate([
+                    '_non_tier_items' => 'nullable|array',
+                    '_non_tier_items.*.product_variant_id' => 'required|integer|exists:product_variants,id',
+                    '_non_tier_items.*.product_additional_unit_id' => 'required|integer',
+                    '_non_tier_items.*.price_per_unit' => 'required|numeric|min:0.01',
+                    '_non_tier_items.*.discount_type' => 'required|in:0,1',
+                    '_non_tier_items.*.discount_amount' => 'nullable|numeric|min:0',
+                ]);
 
+                // Validate tier pricing items
                 foreach ($items as $index => $row) {
                     $variant = ProductVariant::where('product_id', $product->id)->where('id', $row['product_variant_id'] ?? 0)->first();
                     if (!$variant) {
@@ -629,6 +664,29 @@ class VariableProductController extends Controller
                     }
                 }
 
+                // Validate non-tier pricing items
+                foreach ($nonTierItems as $index => $row) {
+                    $variant = ProductVariant::where('product_id', $product->id)->where('id', $row['product_variant_id'] ?? 0)->first();
+                    if (!$variant) {
+                        return back()->withInput()->withErrors(["_non_tier_items.$index.product_variant_id" => 'Invalid variant for this product']);
+                    }
+
+                    $unitRowId = $row['product_additional_unit_id'] ?? 0;
+                    $belongs = ProductAdditionalUnit::where('product_id', $product->id)->where('id', $unitRowId)->exists()
+                        || ProductBaseUnit::where('product_id', $product->id)->where('id', $unitRowId)->exists();
+                    if (!$belongs) {
+                        return back()->withInput()->withErrors(["_non_tier_items.$index.product_additional_unit_id" => 'Invalid unit selection for this product']);
+                    }
+
+                    if ((int)($row['discount_type'] ?? 1) === 1) {
+                        $percent = (float)($row['discount_amount'] ?? 0);
+                        if ($percent < 0 || $percent > 100) {
+                            return back()->withInput()->withErrors(["_non_tier_items.$index.discount_amount" => 'Discount percentage must be between 0 and 100']);
+                        }
+                    }
+                }
+
+                // Validate tier pricing ranges
                 $grouped = [];
                 foreach ($items as $row) {
                     $key = ($row['product_variant_id'] ?? '0') . '-' . ($row['product_additional_unit_id'] ?? '0');
@@ -655,7 +713,33 @@ class VariableProductController extends Controller
 
                 try {
                     DB::beginTransaction();
+                    
+                    // Update pricing types for units
+                    foreach ($pricingTypes as $key => $pricingData) {
+                        $variantId = $pricingData['variant_id'] ?? null;
+                        $unitId = $pricingData['unit_id'] ?? null;
+                        $pricingType = $pricingData['type'] ?? 'tier';
+                        $unitType = $pricingData['unit_type'] ?? 0;
+                        
+                        if ($unitType == 0) {
+                            // Base unit
+                            ProductBaseUnit::where('product_id', $product->id)
+                                ->where('variant_id', $variantId)
+                                ->where('id', $unitId)
+                                ->update(['pricing_type' => $pricingType]);
+                        } else {
+                            // Additional unit
+                            ProductAdditionalUnit::where('product_id', $product->id)
+                                ->where('variant_id', $variantId)
+                                ->where('id', $unitId)
+                                ->update(['pricing_type' => $pricingType]);
+                        }
+                    }
+
+                    // Delete existing tier pricing
                     ProductTierPricing::where('product_id', $product->id)->delete();
+                    
+                    // Save tier pricing
                     foreach ($items as $r) {
                         ProductTierPricing::create([
                             'product_id' => $product->id,
@@ -668,12 +752,30 @@ class VariableProductController extends Controller
                             'discount_amount' => (float)($r['discount_amount'] ?? 0),
                         ]);
                     }
+
+                    // Delete existing non-tier pricing
+                    \App\Models\ProductUnitPrice::where('product_id', $product->id)->delete();
+                    
+                    // Save non-tier pricing
+                    foreach ($nonTierItems as $r) {
+                        \App\Models\ProductUnitPrice::create([
+                            'product_id' => $product->id,
+                            'product_variant_id' => (int)$r['product_variant_id'],
+                            'unit_type' => (int)$r['unit_type'],
+                            'product_additional_unit_id' => (int)$r['product_additional_unit_id'],
+                            'price_per_unit' => (float)$r['price_per_unit'],
+                            'discount_type' => (int)$r['discount_type'],
+                            'discount_amount' => (float)($r['discount_amount'] ?? 0),
+                        ]);
+                    }
+                    
                     DB::commit();
                     return redirect()->route('product-management', ['type' => encrypt($type), 'step' => encrypt(5), 'id' => encrypt($product->id)])
                         ->with('success', 'Data saved successfully');
                 } catch (\Throwable $th) {
                     DB::rollBack();
-                    return back()->withInput()->with('error', 'Failed to save pricing tiers');
+                    Log::error('Failed to save pricing: ' . $th->getMessage());
+                    return back()->withInput()->with('error', 'Failed to save pricing: ' . $th->getMessage());
                 }
 
             case 5:
