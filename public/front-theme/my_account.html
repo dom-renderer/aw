@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjo-Account</title>
+    <link rel="stylesheet" href="css/boostrap-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="fonts/">
+</head>
+
+<body>
+<!-- header content Start-------------------------------------------->
+    <header>
+        <nav class="navbar navbar-expand-lg px-0 py-3">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="images/aw-log.svg" class="h-8" alt="...">
+                </a>
+                <!-- Navbar toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <!-- Nav -->
+                    <div class="navbar-nav mx-lg-auto head-middle">
+                        <form action="" class="w-100">
+                            <div class="header__srh-box">
+                                <div class="srh-left">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                    <input type="text" placeholder="Search">
+                                </div>
+                                <div class="srh-rgt">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                       </form>
+                    </div>
+                    <!-- Right navigation -->
+                    <div class="navbar-nav ms-lg-4">
+                        <div class="navbar-nav mx-lg-auto">
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/cart.svg" alt="">
+                                <span>33</span>
+                            </a>
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/notification.svg" alt="">
+                                <span>11</span>
+                            </a>
+                            <a class="nav-item nav-link user-admn" href="">
+                                <span>
+                                    <img src="images/user-admin.svg" alt="">
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+<!-- header content End-------------------------------------------->
+   
+<!-- beadcrum Section Start -->
+<section>
+    <div class="bred-pro">
+        <div class="container">
+            <div class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">My Account</a></li>
+                    <li class="active">My Account</li>
+                </ol>
+            </div>
+            <div class="acount-bred my-3 d-flex align-items-center justify-content-between ps-2">
+                <div class="account-tleft">
+                    <h1 class="h-36">My Account</h1>
+                    <p>Welcome back, John Smith</p>
+                </div>
+                <div class="account-tright ">
+                    <div class="pro-image">
+                        <img src="images/profile.png" alt="">
+                    </div>
+                    <div class="profile-account">
+                        <p>John Smith</p>
+                        <p>Business Account</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- beadcrum Section End -->
+<!-- MAin-section Content Start -->
+<div class="accoont-menu">
+    <div class="container py-4">
+            <div class="row">
+                <!-- Sidebar (Desktop) -->
+                <div class="col-lg-4 col-xl-3 mb-4 d-none d-lg-block">
+                    <div class="sidebar acount-leftbx c-lft-box bdr-clr nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <h3 class="mb-4">Menu</h3>
+                        <button class="nav-link active" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders" type="button" role="tab">
+                            <img src="images/menuicon-1.svg"  alt=""> Order History
+                        </button>
+                        <button class="nav-link" id="dashboard-tab" data-bs-toggle="pill" data-bs-target="#dashboard" type="button" role="tab">
+                            <img src="images/aacount-1.svg" class="bar-img" alt=""> Dashboard
+                        </button>
+                        <button class="nav-link" id="wishlist-tab" data-bs-toggle="pill" data-bs-target="#wishlist" type="button" role="tab">
+                            <img src="images/menuicon-3.svg" alt=""> Wishlist
+                        </button>
+                        <button class="nav-link" id="addresses-tab" data-bs-toggle="pill" data-bs-target="#addresses" type="button" role="tab">
+                            <img src="images/menuicon-4.svg" alt=""> Addresses
+                        </button>
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab">
+                            <img src="images/menuicon-5.svg" alt=""> Profile Settings
+                        </button>
+                        <button class="nav-link" id="invoices-tab" data-bs-toggle="pill" data-bs-target="#invoices" type="button" role="tab">
+                            <img src="images/menuicon-6.svg" alt=""> Invoices
+                        </button>
+                        <button class="nav-link" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button" role="tab">
+                            <img src="images/menuicon-7.svg" alt=""> Payment Methods
+                        </button>
+                        <button class="nav-link" id="notifications-tab" data-bs-toggle="pill" data-bs-target="#notifications" type="button" role="tab">
+                            <img src="images/menuicon-8.svg" alt=""> Notifications
+                            </button>
+                        <button class="nav-link" id="logout-tab" data-bs-toggle="pill" data-bs-target="#logout" type="button" role="tab">
+                            <img src="images/menuicon-9.svg" alt=""> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Offcanvas Sidebar (Mobile) -->
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title fw-bold" id="offcanvasSidebarLabel">Menu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body nav flex-column nav-pills" id="v-pills-tab-mobile" role="tablist">
+                        <button class="nav-link active" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#orders" type="button" role="tab">
+                            <img src="images/menuicon-1.svg"  alt=""> Order History
+                            </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#dashboard" type="button" role="tab">
+                            <img src="images/aacount-1.svg" class="bar-img" alt=""> Dashboard
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#wishlist" type="button" role="tab">
+                            <img src="images/menuicon-3.svg"  alt="">   Wishlist
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#addresses" type="button" role="tab">
+                            <img src="images/menuicon-4.svg"  alt=""> Addresses
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab">
+                            <img src="images/menuicon-5.svg"  alt=""> Profile Settings
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#invoices" type="button" role="tab">
+                            <img src="images/menuicon-6.svg"  alt=""> Invoices
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#payments" type="button" role="tab">
+                            <img src="images/menuicon-7.svg"  alt=""> Payment Methods
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#notifications" type="button" role="tab">
+                            <img src="images/menuicon-8.svg"  alt=""> Notifications
+                        </button>
+                        <button class="nav-link" data-bs-dismiss="offcanvas" data-bs-toggle="pill" data-bs-target="#logout" type="button" role="tab">
+                           <img src="images/menuicon-9.svg"  alt=""> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-lg-8 col-xl-9">
+                <!-- Mobile Menu Button -->
+                    <button class="btn btn-primary mb-3 mobile-menu-btn menu-none-wb" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
+                        ☰ Menu
+                    </button>
+
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <!-- Orders Tab -->
+                        <div class="tab-pane fade show active" id="orders" role="tabpanel">
+                            <div class="main-content  mb-4">
+                                <div class="c-lft-box bdr-clr history-account">
+                                    <div class="first-block-odr">
+                                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                            <h2 class="h-30">Order History</h2>
+                                            <div class="export-odr">
+                                                <button class="btn btn-primary btn-sm me-2"><img src="images/Union.svg" alt=""> Export Orders</button>
+                                                <button class="btn btn-outline-secondary btn-sm">+ Quick Reorder</button>
+                                            </div>
+                                        </div>
+                                        <p class="mt-2">Track and manage all your wholesale orders</p>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 col-lg-6 col-xl-3">
+                                            <label for="unit" class="form-label mb-1 d-block">Total Spent</label>
+                                            <select class="form-select" id="unit">
+                                                <option selected="">Total Spent</option>
+                                                <option>Boxes</option>
+                                                <option>Pieces</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-xl-3">
+                                            <label for="unit" class="form-label mb-1 d-block">Order Status</label>
+                                            <select class="form-select" id="unit">
+                                                <option selected="">All Statuses</option>
+                                                <option>Boxes</option>
+                                                <option>Pieces</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-xl-3">
+                                            <label for="unit" class="form-label mb-1 d-block">Order Amount</label>
+                                            <select class="form-select" id="unit">
+                                                <option selected="">Any Amount</option>
+                                                <option>Boxes</option>
+                                                <option>Pieces</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-xl-3">
+                                            <label for="unit" class="form-label mb-1 d-block">Filters</label>
+                                            <select class="form-select" id="unit">
+                                                <option selected="">Any Amount</option>
+                                                <option>Boxes</option>
+                                                <option>Pieces</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row text-center g-3 spent-mn">
+                                    <div class="col-md-6 col-lg-6 col-xl-3">
+                                        <div class="stats-card c-lft-box bdr-clr">
+                                            <div class="stats-card-left">
+                                                <h3 class="h-30">47</h3>
+                                                <p>Total Orders</p>
+                                            </div>
+                                            <div class="stats-card-img">
+                                                <img src="images/spent-1.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-3">
+                                        <div class="stats-card c-lft-box bdr-clr">
+                                            <div class="stats-card-left">
+                                                <h3 class="h-30">$18,000</h3>
+                                                <p>Total Spent</p>
+                                            </div>
+                                            <div class="stats-card-img">
+                                                <img src="images/spent-2.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-3">
+                                        <div class="stats-card c-lft-box bdr-clr">
+                                            <div class="stats-card-left">
+                                                <h3 class="h-30">$392</h3>
+                                                <p>Average Order</p>
+                                            </div>
+                                            <div class="stats-card-img">
+                                                <img src="images/spent-3.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-3">
+                                        <div class="stats-card c-lft-box bdr-clr">
+                                            <div class="stats-card-left">
+                                                <h3 class="h-30">3</h3>
+                                                <p>In Transit</p>
+                                            </div>
+                                            <div class="stats-card-img">
+                                                <img src="images/spent-4.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="recnt-ac-odr">
+                                    <h3>Recent Orders</h3>
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                    <th>Items</th>
+                                                    <th>Total</th>
+                                                    <th>Invoice</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>#AW-2025-001234</td>
+                                                    <td>11/09/2025</td>
+                                                    <td><span class="pendig"><img src="images/tabl-1.svg" alt="">Pending</span></td>
+                                                    <td>7 Items</td>
+                                                    <td>$9,999,999.00</td>
+                                                    <td><a href="#" class="text-decoration-none text-primary"><img src="images/tabl-2.svg" alt=""> Download</a></td>
+                                                    <td>
+                                                        <button class="btn blue-v">View</button>
+                                                        <button class="btn rcd-bt">Reorder</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>#AW-2025-001234</td>
+                                                    <td>11/09/2025</td>
+                                                    <td><span class="pendig"><img src="images/tabl-1.svg" alt="">Pending</span></td>
+                                                    <td>7 Items</td>
+                                                    <td>$9,999,999.00</td>
+                                                    <td><a href="#" class="text-decoration-none text-primary"><img src="images/tabl-2.svg" alt=""> Download</a></td>
+                                                    <td>
+                                                        <button class="btn blue-v">View</button>
+                                                        <button class="btn rcd-bt">Reorder</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="pagination-account">
+                                            <div class="pegination-box">
+                                                <div class="showing">
+                                                    Showing 1-5 of 47 orders
+                                                </div>
+                                                <div class="acount-peg">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center custom-pagination">
+                                                            <li class="page-item">
+                                                            <a class="page-link" href="#" aria-label="Previous">
+                                                                <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+                                                            </a>
+                                                            </li>
+                                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                            <li class="page-item"><a class="page-link" href="#">10</a></li>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Next">
+                                                                    <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other tabs (placeholders) -->
+                        <div class="tab-pane fade" id="dashboard"><div class="main-content">Dashboard Content</div></div>
+                        <div class="tab-pane fade" id="wishlist"><div class="main-content">Wishlist Content</div></div>
+                        <div class="tab-pane fade" id="addresses"><div class="main-content">Addresses Content</div></div>
+                        <div class="tab-pane fade" id="profile"><div class="main-content">Profile Content</div></div>
+                        <div class="tab-pane fade" id="invoices"><div class="main-content">Invoices Content</div></div>
+                        <div class="tab-pane fade" id="payments"><div class="main-content">Payments Content</div></div>
+                        <div class="tab-pane fade" id="notifications"><div class="main-content">Notifications Content</div></div>
+                        <div class="tab-pane fade" id="logout"><div class="main-content text-center">Logout Successful</div></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+<!-- MAin-section Content Start -->
+   
+<!--  qucik actoin Content Start -->
+<section class="next-odr bg-sky">
+    <div class="next-block quick-action pd-65">
+        <div class=" container">
+            <h2 class="h-30 text-center">Quick Actions</h2>
+            <div class="next-box">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/qa-1.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Quick Reorder</h3>
+                            <p class="p-18">Reorder your most frequently <br> purchased items</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/qa-2.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Bulk Upload</h3>
+                            <p class="p-18">Upload a CVS file to place large <br> orders quickly</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/qa-3.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Schedule Order</h3>
+                            <p class="p-18">Get help with your orders <br> or account</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/qa-4.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Support</h3>
+                            <p class="p-18">Get help with your orders <br> or account</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- qucik actoin  Content End -->
+
+
+<!-- order-anylist Content Start -->
+<section class="order-analist">
+    <div class="analisy-block pd-y50">
+        <div class="container">
+            <h2 class="h-30">Order Analytics</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="mon-box c-lft-box bdr-clr">
+                        <div class="mon-top d-flex align-items-center justify-content-between">
+                            <h3 class="h-25">Monthly Spending</h3>
+                            <select class="form-select sort-select" id="sortSelect" aria-label="Sort select">
+                                <option selected="">A-Z</option>
+                                <option value="1">Z-A</option>
+                                <option value="2">Newest</option>
+                                <option value="3">Oldest</option>
+                            </select>
+                        </div>
+                        <div class="avg-spend">
+                            <img src="images/aavergae.svg" alt="">
+                            <p>Monthly spending cahrt would appear here</p>
+                            <p>Average: $1,545/mth</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="category-box c-lft-box bdr-clr">
+                        <h3 class="h-30">Top Categories</h3>
+                        <div class="category-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex tp-left align-items-center gap-3">
+                                <div class="cat-icon  rounded-circle d-flex align-items-center justify-content-center">
+                                    <img src="images/category-1.svg" alt="">
+                                </div>
+                                <span class="cat-name fw-semibold">Beauty & Personal Care</span>
+                            </div>
+
+                            <div class="d-flex tp-right align-items-center gap-3">
+                                <div class="progress category-progress" style="width: 150px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="cat-amount fw-semibold">$8,234</span>
+                            </div>
+                        </div>
+                        <div class="category-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex tp-left align-items-center gap-3">
+                                <div class="cat-icon  rounded-circle d-flex align-items-center justify-content-center">
+                                    <img src="images/category-2.svg" alt="">
+                                </div>
+                                <span class="cat-name fw-semibold">Rum</span>
+                            </div>
+
+                            <div class="d-flex tp-right align-items-center gap-3">
+                                <div class="progress category-progress" style="width: 150px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="cat-amount fw-semibold">$8,234</span>
+                            </div>
+                        </div>
+                        <div class="category-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex tp-left align-items-center gap-3">
+                                <div class="cat-icon  rounded-circle d-flex align-items-center justify-content-center">
+                                    <img src="images/category-3.svg" alt="">
+                                </div>
+                                <span class="cat-name fw-semibold">Home & Kitchen</span>
+                            </div>
+
+                            <div class="d-flex tp-right align-items-center gap-3">
+                                <div class="progress category-progress" style="width: 150px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="cat-amount fw-semibold">$8,234</span>
+                            </div>
+                        </div>
+                        <div class="category-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex tp-left align-items-center gap-3">
+                                <div class="cat-icon  rounded-circle d-flex align-items-center justify-content-center">
+                                    <img src="images/category-4.svg" alt="">
+                                </div>
+                                <span class="cat-name fw-semibold">Pet Supplies</span>
+                            </div>
+
+                            <div class="d-flex tp-right align-items-center gap-3">
+                                <div class="progress category-progress" style="width: 150px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="cat-amount fw-semibold">$8,234</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- order-anylist Content End -->
+
+<!-- Frequently  Content Start -->
+<section class="recent-ml bg-grey">
+    <div class="recent-block Frequently__block pd-y50">
+        <div class="container">
+            <h2 class="h-30">
+                Frequently Ordered Items
+                <a href="" class="view-black">
+                    View All
+                    <img src="images/view-blue-arrow.svg" alt="">
+                </a>
+            </h2>
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/frenqy-1.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Master of Mixes Simple Syrup</h3>
+                            <p class="pr-bold mb-3">$25.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/frenqy-2.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Master of Mixes Triple Sec</h3>
+                            <p class="pr-bold mb-3">$89.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/frenqy-3.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Master of Mixes Lime Juice</h3>
+                            <p class="pr-bold mb-3">$322.80</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/frenqy-4.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Master of Mixes Lemon Juice</h3>
+                            <p class="pr-bold mb-3">$15.20</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Frequently  Content Start -->
+
+
+
+
+
+
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>About Anjo Wholesale</h3>
+                            <p class="mt-2 mb-2">Mon-Fri 8AM-4PM</p>
+                            <div class="ftr-whl">
+                                <p>Our goods are delivered at no <br>  extra charge once our delivery <br> requirements are met! Give us a <br> call to find out more information.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>Phone</h3>
+                            <div class="ftor-call">
+                                <p>(268) 480-3080 (AR)</p>
+                                <p>(268) 736 5814 (Whatsapp)</p>
+                                <p>(268) 480-3046/7 (Coolidge)</p>
+                                <p>(268) 480-3086 (Fax)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>Email</h3>
+                            <ul class="ftr-ul">
+                                <li><a href="">anjo.w@candw.ag</a></li>
+                                <li><a href="">​HR@anjowholesale.com</a></li>
+                                <li><a href="">info@anjowholesale.com</a></li>
+                                <li><a href="">mario.winter@anjowholesale.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>P.O. Box</h3>
+                            <div class="ftr-po">
+                                Anjo Wholesale <br>
+                                P.O. Box 104 St. John's, <br> Antigua & Barbuda
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xl-2">
+                        <div class="ftr-social">
+                            <a href=""><img src="images/Facebook.svg" alt=""></a>
+                            <a href=""><img src="images/Instagram.svg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-8 col-xl-10">
+                        <ul>
+                            <li>
+                                <img src="images/Subtract.svg" alt="">
+                                Anjo Wholesale
+                            </li>
+                            <li>American Road St. John's, Antigua & Barbuda</li>
+                            <li>Coolidge, Corner of Sir George Walter Highway & Powells Main Road</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/Jquery-min.js"></script>
+    <script src="js/bootstrap-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      
+    </script>
+    <script>
+  // Close offcanvas when a link is clicked
+    $(document).ready(function () {
+        const offcanvasElement = document.getElementById('offcanvasSidebar');
+
+        // Ensure Bootstrap instance exists
+        const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement);
+
+        // Close offcanvas when any link is clicked
+        $('#offcanvasSidebar .nav-link, #offcanvasSidebar a').on('click', function () {
+            offcanvas.hide();
+        });
+
+        // Extra safety: clean up leftover backdrop *after* Bootstrap finishes closing
+        offcanvasElement.addEventListener('hidden.bs.offcanvas', () => {
+            // Remove any accidental leftover backdrop
+            // setTimeout(() => {
+            //   $('.offcanvas-backdrop').remove();
+            //   $('body').removeClass('offcanvas-backdrop show').css('overflow', '');
+            // }, 150); // small delay ensures Bootstrap cleanup runs first
+        });
+
+        // Prevent double backdrops if menu button clicked repeatedly
+        offcanvasElement.addEventListener('show.bs.offcanvas', () => {
+            $('.offcanvas-backdrop').remove();
+        });
+    });
+
+  
+</script>
+    
+    
+    
+</body>
+
+</html>

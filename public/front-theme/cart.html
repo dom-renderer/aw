@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjo-Cart</title>
+    <link rel="stylesheet" href="css/boostrap-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="fonts/">
+</head>
+
+<body>
+<!-- header content Start-------------------------------------------->
+    <header>
+        <nav class="navbar navbar-expand-lg px-0 py-3">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="images/aw-log.svg" class="h-8" alt="...">
+                </a>
+                <!-- Navbar toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <!-- Nav -->
+                    <div class="navbar-nav mx-lg-auto head-middle">
+                        <form action="" class="w-100">
+                            <div class="header__srh-box">
+                                <div class="srh-left">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                    <input type="text" placeholder="Search">
+                                </div>
+                                <div class="srh-rgt">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                       </form>
+                    </div>
+                    <!-- Right navigation -->
+                    <div class="navbar-nav ms-lg-4">
+                        <div class="navbar-nav mx-lg-auto">
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/cart.svg" alt="">
+                                <span>33</span>
+                            </a>
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/notification.svg" alt="">
+                                <span>11</span>
+                            </a>
+                            <a class="nav-item nav-link user-admn" href="">
+                                <span>
+                                    <img src="images/user-admin.svg" alt="">
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+<!-- header content End-------------------------------------------->
+   
+<!-- beadcrum Section Start -->
+<section>
+    <div class="bred-pro">
+        <div class="container">
+            <div class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Cart</a></li>
+                    <li class="active">Checkout</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- beadcrum Section End -->
+<!-- MAin-section Content Start -->
+<section class="cart-mian">
+    <div class="car-block ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 col-xxl-8 col-md-12">
+                    <div class="c-left-block">
+                        <h2 class="h-30 mb-4">Your Cart (3items)</h2>
+                        <div class="c-left-top">
+                            <div class="c-lft-box bdr-clr">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-12 col-xl-12 col-xxl-8 col-md-6">
+                                        <div class="d-flex gap-4 align-items-center">
+                                            <div class="crt-img">
+                                                <img src="images/cart-1.png" class="w-100" alt="">
+                                            </div>
+                                            <div class="cart-details">
+                                                <h3 class="h-24 mb-2">OKF Sparkling Water Lychee</h3>
+                                                <p class="p-18 mb-2">SKU: GJC-12-002</p>
+                                                <a href="" class="bulk-pr btn">NEW</a>
+                                                <p class="h-24 mt-2"><b>$89.99</b> &nbsp;<span class="p-18">per case</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-xl-12 col-xxl-4 col-md-6">
+                                        <div class="cart-all-dtl">
+                                            <div class="col-auto">
+                                                <div class="input-group quantity-group">
+                                                    <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                                                    <input type="text" class="form-control text-center" value="1" id="quantity" readonly="">
+                                                    <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="cart-pra">
+                                                <p class="h-24">$89.99</p>
+                                                <p class="p-18">Total</p>
+                                            </div>
+                                            <div class="cart-delete">
+                                                <img src="images/cart-delete.png" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-lft-box bdr-clr">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-12 col-xl-12 col-xxl-8 col-md-6">
+                                        <div class="d-flex gap-4 align-items-center">
+                                            <div class="crt-img">
+                                                <img src="images/cart-2.png" class="w-100" alt="">
+                                            </div>
+                                            <div class="cart-details">
+                                                <h3 class="h-24 mb-2">OKF Sparkling Water Lychee</h3>
+                                                <p class="p-18 mb-2">SKU: GJC-12-002</p>
+                                                <a href="" class="bulk-pr btn">NEW</a>
+                                                <p class="h-24 mt-2"><b>$89.99</b> &nbsp;<span class="p-18">per case</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-xl-12 col-xxl-4 col-md-6">
+                                        <div class="cart-all-dtl">
+                                            <div class="col-auto">
+                                                <div class="input-group quantity-group">
+                                                    <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                                                    <input type="text" class="form-control text-center" value="1" id="quantity" readonly="">
+                                                    <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="cart-pra">
+                                                <p class="h-24">$89.99</p>
+                                                <p class="p-18">Total</p>
+                                            </div>
+                                            <div class="cart-delete">
+                                                <img src="images/cart-delete.png" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-lft-box bdr-clr">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-12 col-xl-12 col-xxl-8 col-md-6">
+                                        <div class="d-flex gap-4 align-items-center">
+                                            <div class="crt-img">
+                                                <img src="images/cart-3.png" class="w-100" alt="">
+                                            </div>
+                                            <div class="cart-details">
+                                                <h3 class="h-24 mb-2">OKF Sparkling Water Lychee</h3>
+                                                <p class="p-18 mb-2">SKU: GJC-12-002</p>
+                                                <a href="" class="bulk-pr btn">NEW</a>
+                                                <p class="h-24 mt-2"><b>$89.99</b> &nbsp;<span class="p-18">per case</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-xl-12 col-xxl-4 col-md-6">
+                                        <div class="cart-all-dtl">
+                                            <div class="col-auto">
+                                                <div class="input-group quantity-group">
+                                                    <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                                                    <input type="text" class="form-control text-center" value="1" id="quantity" readonly="">
+                                                    <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="cart-pra">
+                                                <p class="h-24">$89.99</p>
+                                                <p class="p-18">Total</p>
+                                            </div>
+                                            <div class="cart-delete">
+                                                <img src="images/cart-delete.png" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="crt-middle bdr-clr crt-pading mt-30">
+                            <h3 class="h-24 mb-4">Promo Code</h3>
+                            <div class="promo-code">
+                                <input type="text" placeholder="Enter Promo">
+                                <button class="btn blue-btnm">Apply</button>
+                            </div>
+                        </div>
+                        <div class="cart-summery bdr-clr crt-pading mt-30">
+                            <h3 class="h-24 mb-4">Promo Code</h3>
+                            <ul>
+                                <li>
+                                    <span>Subtotal (6items)</span>
+                                    <span>$434.99</span>
+                                </li>
+                                <li>
+                                    <span>Bulk Discount</span>
+                                    <span>-$43.49</span>
+                                </li>
+                                <li>
+                                    <span>Shipping</span>
+                                    <span>$25.00</span>
+                                </li>
+                                <li>
+                                    <span>Tax Estimate</span>
+                                    <span>$33.33</span>
+                                </li>
+                            </ul>
+                            <div class="crt-total d-flex justify-content-between gap-2">
+                                <p class="h-24">Total</p>
+                                <p class="h-24">$449.77</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-4 col-md-12">
+                    <div class="c-right-block">
+                        <h2 class="h-30 mb-4">Checkout</h2>
+                        <form action="">
+                            <div class="shopping-text bdr-clr crt-pading mt-30">
+                                <h3 class="h-24 mb-3">Shipping Information</h3>
+                                <div class="row mb-3">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <label for="exampleInputEmail1" class="form-label">First Name</label>
+                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>
+                                     <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="exampleInputEmail1" class="form-label">Company Name</label>
+                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>                                    
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="exampleInputEmail1" class="form-label">Street Address</label>
+                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>                                    
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <label for="exampleInputEmail1" class="form-label">City</label>
+                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <label for="exampleInputEmail1" class="form-label">Postal Code</label>
+                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="exampleInputEmail1" class="form-label">Phone Number</label>
+                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="shop-info bdr-clr crt-pading mt-30">
+                                <h3 class="h-24 mb-3">Shipping Information</h3>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                               <img src="images/credit.png" alt=""> &nbsp; Credit/Debit Card
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="exampleInputEmail1" class="form-label">Postal Code</label>
+                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
+                                        <label for="exampleInputEmail1" class="form-label">Expiration Date</label>
+                                        <input type="date" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>
+                                     <div class="col-lg-6">
+                                        <label for="exampleInputEmail1" class="form-label">CVV</label>
+                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="exampleInputEmail1" class="form-label">Cardholder Name</label>
+                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="order-summry bdr-clr crt-pading mt-30">
+                                <h3 class="h-24 mb-3">Order Summary</h3>
+                                <ul>
+                                    <li>
+                                        <span>Subtotal</span>
+                                        <span>$434.94</span>
+                                    </li>
+                                    <li>
+                                        <span>Bulk Discount</span>
+                                        <span>-$43.49</span>
+                                    </li>
+                                    <li>
+                                        <span>Shipping</span>
+                                        <span>$25.00</span>
+                                    </li>
+                                    <li>
+                                        <span>Tax</span>
+                                        <span>$33.32</span>
+                                    </li>
+                                </ul>
+                                <div class="crt-total d-flex justify-content-between gap-2">
+                                    <p class="h-24">Total</p>
+                                    <p class="h-24">$449.77</p>
+                                </div>
+                                <div class="crt-estimate">
+                                    <img src="images/location.png" alt="">
+                                    Estimated Delivery: <span> March 15-17 2025</span>
+                                </div>
+                                <div class="crt-place">
+                                    <a href="" class="btn cart-btn d-block">Place Order</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAin-section Content Start -->
+   
+<!-- Service Content Start -->
+<section class="service">
+    <div class="service-block bg-sky">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-xl-4  col-md-4 col-sm-4">
+                    <div class="round-png">
+                        <img src="images/service-img1.png" alt="">
+                    </div>
+                    <h2 class="h-24 my-3">Secure Payments</h2>
+                    <p class="p-18">256-bit SSL encryption protects your <br> payment information</p>
+                </div>
+                <div class="col-lg-4 col-xl-4  col-md-4 col-sm-4">
+                    <div class="round-png">
+                        <img src="images/service-img2.png" alt="">
+                    </div>
+                    <h2 class="h-24 my-3">Secure Payments</h2>
+                    <p class="p-18">Same-day dispatch for orders placed before <br> 2PM</p>
+                </div>
+                <div class="col-lg-4 col-xl-4  col-md-4 col-sm-4">
+                    <div class="round-png">
+                        <img src="images/service-img3.png" alt="">
+                    </div>
+                    <h2 class="h-24 my-3">24/7 Support</h2>
+                    <p class="p-18">Dedicated support team for all your <br> wholesale needs</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Service Content End -->
+
+
+<!-- Custonmer Content Start -->
+
+<!-- Custonmer Content End -->
+
+<!-- Recent Content Start -->
+
+<section class="recent-ml cart-customer">
+    <div class="recent-block pd-y50">
+        <div class="container">
+            <h2 class="h-30">
+                Customers Also Bought
+            </h2>
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/cart-cus.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">True Adult Dog Food Dried Pebbles</h3>
+                            <p class="pr-bold mb-3">$25.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/cart-cus.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">True Salmon Oil</h3>
+                            <p class="pr-bold mb-3">$89.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/cart-cus.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Barcelo Imperial Mizunara Cask</h3>
+                            <p class="pr-bold mb-3">$322.80</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/cart-cus.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Real Ginger Infused Syrup</h3>
+                            <p class="pr-bold mb-3">$15.20</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Content Start -->
+
+
+
+
+
+
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>About Anjo Wholesale</h3>
+                            <p class="mt-2 mb-2">Mon-Fri 8AM-4PM</p>
+                            <div class="ftr-whl">
+                                <p>Our goods are delivered at no <br>  extra charge once our delivery <br> requirements are met! Give us a <br> call to find out more information.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>Phone</h3>
+                            <div class="ftor-call">
+                                <p>(268) 480-3080 (AR)</p>
+                                <p>(268) 736 5814 (Whatsapp)</p>
+                                <p>(268) 480-3046/7 (Coolidge)</p>
+                                <p>(268) 480-3086 (Fax)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>Email</h3>
+                            <ul class="ftr-ul">
+                                <li><a href="">anjo.w@candw.ag</a></li>
+                                <li><a href="">​HR@anjowholesale.com</a></li>
+                                <li><a href="">info@anjowholesale.com</a></li>
+                                <li><a href="">mario.winter@anjowholesale.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>P.O. Box</h3>
+                            <div class="ftr-po">
+                                Anjo Wholesale <br>
+                                P.O. Box 104 St. John's, <br> Antigua & Barbuda
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xl-2">
+                        <div class="ftr-social">
+                            <a href=""><img src="images/Facebook.svg" alt=""></a>
+                            <a href=""><img src="images/Instagram.svg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-8 col-xl-10">
+                        <ul>
+                            <li>
+                                <img src="images/Subtract.svg" alt="">
+                                Anjo Wholesale
+                            </li>
+                            <li>American Road St. John's, Antigua & Barbuda</li>
+                            <li>Coolidge, Corner of Sir George Walter Highway & Powells Main Road</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/Jquery-min.js"></script>
+    <script src="js/bootstrap-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      
+    </script>
+    
+    
+    
+</body>
+
+</html>

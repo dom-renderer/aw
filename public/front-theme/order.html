@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjo-Order</title>
+    <link rel="stylesheet" href="css/boostrap-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="fonts/">
+</head>
+
+<body>
+<!-- header content Start-------------------------------------------->
+    <header>
+        <nav class="navbar navbar-expand-lg px-0 py-3">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="images/aw-log.svg" class="h-8" alt="...">
+                </a>
+                <!-- Navbar toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <!-- Nav -->
+                    <div class="navbar-nav mx-lg-auto head-middle">
+                        <form action="" class="w-100">
+                            <div class="header__srh-box">
+                                <div class="srh-left">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                    <input type="text" placeholder="Search">
+                                </div>
+                                <div class="srh-rgt">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                       </form>
+                    </div>
+                    <!-- Right navigation -->
+                    <div class="navbar-nav ms-lg-4">
+                        <div class="navbar-nav mx-lg-auto">
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/cart.svg" alt="">
+                                <span>33</span>
+                            </a>
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/notification.svg" alt="">
+                                <span>11</span>
+                            </a>
+                            <a class="nav-item nav-link user-admn" href="">
+                                <span>
+                                    <img src="images/user-admin.svg" alt="">
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+<!-- header content End-------------------------------------------->
+   
+
+<!-- order-hero Content Start -->
+<section class="order-hero">
+    <div class="odr-block bg-sky">
+        <div class="odr-w-hero">
+            <div class="text-center">
+                <img src="images/order-hero1.png" alt="">
+                <h1 class="h-48 mt-4">Thank You for Your Order!</h1>
+                <p class="p-25 mt-3">Your wholesale order has been successfully placed and is being processed.</p>
+            </div>
+            <div class="odr-date-num">
+                <div class="row">
+                    <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 mr-576">
+                        <p class="p-18">Order Number</p>
+                        <p class="p-25">#WS-2025-003847</p>
+                    </div>
+                    <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6">
+                        <p class="p-18">Order Number</p>
+                        <p class="p-25">#WS-2025-003847</p>
+                    </div>
+                </div>
+            </div>
+            <div class="invoice-download d-flex justify-content-center gap-3">
+                <button class="btn">Download Invoice</button>
+                <button class="btn"><img src="images/order-view.png" alt="">View My Orders</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- order-hero Content Start -->
+   
+<!-- Summery Content Start -->
+
+<section class="odr-sum">
+    <div class="odr-sum-block">
+        <div class="container-1200 container">
+            <h2 class="h-30 mb-4">Order Summary</h2>
+            <div class="row">
+                <div class="col-lg-8 col-md-7">
+                    <div class="odr-sm-left">
+                        
+                        <div class="rd-ltop c-lft-box bdr-clr">
+                            <h3 class="h-24 mb-4">Items Ordered (3 items)</h3>
+                            <div class="odr-collection d-flex justify-content-between align-items-center gap-4">
+                                <div class="odr-clect-left d-flex justify-content-between align-items-center gap-4">
+                                    <div>
+                                        <img src="images/collection1.png" alt="">
+                                    </div>
+                                    <div class="colcet-detail">
+                                        <h3 class="h-24 mb-2">Gourmet Juice Collection</h3>
+                                        <p class="p-18">SKU: GJC-12-002</p>
+                                        <p class="p-18">Quantity: 2 cases</p>
+                                    </div>
+                                </div>
+                                <div class="colect-rates">
+                                    $89.99
+                                </div>
+                            </div>
+                            <div class="odr-collection d-flex justify-content-between align-items-center gap-4">
+                                <div class="odr-clect-left d-flex justify-content-between align-items-center gap-4">
+                                    <div>
+                                        <img src="images/collection2.png" alt="">
+                                    </div>
+                                    <div class="colcet-detail">
+                                        <h3 class="h-24 mb-2">Gourmet Juice Collection</h3>
+                                        <p class="p-18">SKU: GJC-12-002</p>
+                                        <p class="p-18">Quantity: 2 cases</p>
+                                    </div>
+                                </div>
+                                <div class="colect-rates">
+                                    $89.99
+                                </div>
+                            </div>
+                            <div class="odr-collection d-flex justify-content-between align-items-center gap-4">
+                                <div class="odr-clect-left d-flex justify-content-between align-items-center gap-4">
+                                    <div>
+                                        <img src="images/collection3.png" alt="">
+                                    </div>
+                                    <div class="colcet-detail">
+                                        <h3 class="h-24 mb-2">Gourmet Juice Collection</h3>
+                                        <p class="p-18">SKU: GJC-12-002</p>
+                                        <p class="p-18">Quantity: 2 cases</p>
+                                    </div>
+                                </div>
+                                <div class="colect-rates">
+                                    $89.99
+                                </div>
+                            </div>
+                        </div>
+                        <div class="oder-middle cart-summery bdr-clr crt-pading mt-30">
+                            <h3 class="h-24 mb-4">Order Total</h3>
+                            <ul>
+                                <li>
+                                    <span>Subtotal (6 items)</span>
+                                    <span>$89.99</span>
+                                </li>
+                                <li>
+                                    <span>Bulk Discount</span>
+                                    <span>-$43.49</span>
+                                </li>
+                                <li>
+                                    <span>Shipping</span>
+                                    <span>$25.00</span>
+                                </li>
+                                <li>
+                                    <span>Tax Estimate</span>
+                                    <span>$33.33</span>
+                                </li>
+                            </ul>
+                            <div class="crt-total d-flex justify-content-between gap-2">
+                                <p class="h-24">Total Paid</p>
+                                <p class="h-24">$449.77</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5">
+                    <div class="odr-right">
+                        <div class="ord-shoping shop-info bdr-clr crt-pading mt-30">
+                            <h2 class="h-24 mb-3">Shipping Information</h2>
+                            <p class="addr-odr blue-20">Delivery Address</p>
+                            <p>
+                                John Smith <br>Marina Restaurant <br>123 Harbor Drive <br>Marina Bay, 12345
+                            </p>
+                            <p class="mt-2">
+                                <span class="blue-20">Phone</span> <br>
+                                +1 (123) 456-7890
+                            </p>
+                        </div>
+                        <div class="ord-shoping method shop-info bdr-clr crt-pading mt-30">
+                            <h2 class="h-24 mb-3">Delivery Method</h2>
+                            <p><img class="me-2" src="images/truct.svg" alt="">Standard Shipping</p>
+                            <div class="estimate-odr">
+                                <h3 class="h-20">
+                                    <img src="images/clock.svg" class="me-2" alt="">Estimated Delivery:
+                                </h3>
+                                <div>
+                                    March 15-17, 2025
+                                </div>
+                                <p class="p-16">Your order will be dispatched within 24 hours</p>
+                            </div>
+                        </div>
+                        <div class="ord-shoping payment-method shop-info bdr-clr crt-pading mt-30">
+                            <h2 class="h-24 mb-3">Payment Method</h2>
+                            <div class="debit-odr">
+                                <img src="images/credit.png" alt="">
+                                <span class="h-24">Credit/Debit Card</span>
+                                <p class="odr-num p-16">**** **** **** 4567</p>
+                                <p class="p-18 my-2">Payment processed successfully</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Summery Content End -->
+
+
+<!-- order-status Content Start -->
+<section>
+    <div class="odr-status">
+        <div class="odr-status-block">
+            <div class="container-1200 container">
+                <h2 class="h-30 text-center">Order Status</h2>
+                <div class="status-box">
+                    <div class="my-5">
+                        <div class="box-track">
+                            <div class="order-tracker d-flex justify-content-between align-items-center text-center">
+                                
+                                <!-- Step 1 -->
+                                <div class="step active">
+                                    <div class="icon">
+                                        <img src="images/status-1.svg" alt="">
+                                    </div>
+                                    <p class="title">Order Placed</p>
+                                    <p class="small">Mar 12</p>
+                                </div>
+
+                                <div class="line"></div>
+
+                                <!-- Step 2 -->
+                                <div class="step active">
+                                    <div class="icon">
+                                        <img src="images/status-2.svg" alt="">
+                                    </div>
+                                    <p class="title">Processing</p>
+                                    <p class="small">In Progress</p>
+                                </div>
+
+                                <div class="line"></div>
+
+                                <!-- Step 3 -->
+                                <div class="step">
+                                    <div class="icon">
+                                        <img src="images/status-3.svg" alt="">
+                                    </div>
+                                    <p class="title">Shipping</p>
+                                    <p class="small">Pending</p>
+                                </div>
+
+                                <div class="line"></div>
+
+                                <!-- Step 4 -->
+                                <div class="step">
+                                    <div class="icon">
+                                        <img src="images/status-4.svg" alt="">
+                                    </div>
+                                    <p class="title">Delivered</p>
+                                    <p class="small">Pending</p>
+                                </div>
+                            </div>
+                            <div class="proces-odr text-center">
+                                <p class="h-24 mb-2">Your order is being processed</p>
+                                <p>We’ll send you tracking information once your order ships</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- order-status Content End -->
+
+<!-- next-section Content Start -->
+
+<section class="next-odr">
+    <div class="next-block pd-65">
+        <div class="container-1200 container">
+            <h2 class="h-30 text-center">What’s Next?</h2>
+            <div class="next-box">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/next-1.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Email Confirmation</h3>
+                            <p class="p-18">A detailed order confirmation has <br> been sent to your email address</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/next-2.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Order Updates</h3>
+                            <p class="p-18">We’ll notify you when your order ships <br> and provide tracking information</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/next-3.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Need Help?</h3>
+                            <p class="p-18">Our customer service team is here to <br> help with any questions</p>
+                            <button class="btn next-btn">View My Orders</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- next-section Content End -->
+
+<!-- con-shopping Content Start -->
+<section class="con-shopping bg-sky">
+    <div class="con__shop-block pd-50">
+        <div class="container">
+            <h2 class="h-30">
+                Continue Shopping
+            </h2>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide">
+                        <div class="recent-box">
+                            <div class="produc-imgbx">
+                                <img class="w-100" src="images/shoping-bttle-1.png" alt="">
+                                
+                            </div>
+                            <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Premium Spirts Collection</h3>
+                            <p class="pr-bold mb-3">$25.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide">
+                        <div class="recent-box">
+                            <div class="produc-imgbx">
+                                <img src="images/shoping-bttle-2.png" class="w-100" alt="">
+                                
+                            </div>
+                            <!-- <img class="w-100" src="images/recent-p1.png" alt=""> -->
+                            <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Premium Spirts Collection</h3>
+                                <p class="pr-bold mb-3">$25.99</p>
+                                <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide">
+                        <div class="recent-box">
+                            <div class="produc-imgbx">
+                                <img class="w-100" src="images/shoping-bttle-3.png" alt="">
+                               
+                            </div>
+                            <div class="rc-bx-in">
+                                <h3 class="h-20 mb-3">Premium Spirts Collection</h3>
+                                <p class="pr-bold mb-3">$25.99</p>
+                                <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="swiper-slide">
+                        <div class="recent-box">
+                            <div class="produc-imgbx">
+                                <img src="images/shoping-bttle-4.png" class="w-100" alt="">
+                               
+                            </div>
+                            <!-- <img class="w-100" src="images/recent-p1.png" alt=""> -->
+                            <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Premium Spirts Collection</h3>
+                                <p class="pr-bold mb-3">$25.99</p>
+                                <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="swiper-slide">
+                        <div class="recent-box">
+                                <div class="produc-imgbx">
+                                    <img src="images/shoping-bttle-1.png" class="w-100" alt="">
+                                </div>
+                                <!-- <img class="w-100" src="images/recent-p1.png" alt=""> -->
+                                <div class="rc-bx-in">
+                                <h3 class="h-20 mb-3">Premium Spirts Collection</h3>
+                                    <p class="pr-bold mb-3">$25.99</p>
+                                    <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+                <!-- ← Prev / Next (must be present and match the JS selectors) -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- con-shopping Content End -->
+
+
+
+<!-- manage-account Content Start -->
+<section class="next-odr manage-section">
+    <div class="next-block pd-65">
+        <div class="container-1200 container">
+            <h2 class="h-30 text-center">Manage Your Account</h2>
+            <div class="next-box">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/aacount-1.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Email Confirmation</h3>
+                            <p class="p-18">View all your past orders <br> and reorder favorites</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/aacount-2.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Wishlist</h3>
+                            <p class="p-18">Save products for later <br> and get notifications</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/aacount-3.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Profile Settings</h3>
+                            <p class="p-18">Update your personal <br> and business information</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-md-6 col-sm-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/aacount-4.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Invoices</h3>
+                            <p class="p-18">Download and manage <br>`all your invoices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- manage-account Content End -->
+
+
+<!-- Support Content Start -->
+<section class="support">
+    <div class="support-block">
+        <div class="container-1200 container">
+            <h2 class="h-30">Questions About Your Order?</h2>
+            <p class="mt-4">Our dedicated wholesale support team is here to help</p>
+            <div class="next-box">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/call.svg" alt="">
+                            </div>
+                            <h3 class="h-20 mb-3 mt-3">Call Us</h3>
+                            <p>+1 (123) 456-7890</p>
+                            <p>Mon-Fri: 8AM-6PM</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <div class="next_inbox c-lft-box bdr-clr">
+                            <div class="nxt-icon">
+                                <img src="images/next-1.svg" alt="">
+                            </div>
+                            <h3 class="h-24 mb-3 mt-3">Email Support</h3>
+                            <p><a href="">orders@anjowholesale.com</a></p>
+                            <p>Response within 2 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Support Content Start -->
+
+
+
+
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>About Anjo Wholesale</h3>
+                            <p class="mt-2 mb-2">Mon-Fri 8AM-4PM</p>
+                            <div class="ftr-whl">
+                                <p>Our goods are delivered at no <br>  extra charge once our delivery <br> requirements are met! Give us a <br> call to find out more information.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>Phone</h3>
+                            <div class="ftor-call">
+                                <p>(268) 480-3080 (AR)</p>
+                                <p>(268) 736 5814 (Whatsapp)</p>
+                                <p>(268) 480-3046/7 (Coolidge)</p>
+                                <p>(268) 480-3086 (Fax)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>Email</h3>
+                            <ul class="ftr-ul">
+                                <li><a href="">anjo.w@candw.ag</a></li>
+                                <li><a href="">​HR@anjowholesale.com</a></li>
+                                <li><a href="">info@anjowholesale.com</a></li>
+                                <li><a href="">mario.winter@anjowholesale.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                        <div class="footer-box">
+                            <h3>P.O. Box</h3>
+                            <div class="ftr-po">
+                                Anjo Wholesale <br>
+                                P.O. Box 104 St. John's, <br> Antigua & Barbuda
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xl-2">
+                        <div class="ftr-social">
+                            <a href=""><img src="images/Facebook.svg" alt=""></a>
+                            <a href=""><img src="images/Instagram.svg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-8 col-xl-10">
+                        <ul>
+                            <li>
+                                <img src="images/Subtract.svg" alt="">
+                                Anjo Wholesale
+                            </li>
+                            <li>American Road St. John's, Antigua & Barbuda</li>
+                            <li>Coolidge, Corner of Sir George Walter Highway & Powells Main Road</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/Jquery-min.js"></script>
+    <script src="js/bootstrap-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var swiper = new Swiper(".mySwiper", {
+                slidesPerView: 4,
+                spaceBetween: 20,
+                navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                320: { slidesPerView: 1, spaceBetween: 10 },
+                576: { slidesPerView: 2, spaceBetween: 15 },
+                992: { slidesPerView: 3, spaceBetween: 20 },
+                1200: { slidesPerView: 4, spaceBetween: 20 },
+                },
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
+ 
