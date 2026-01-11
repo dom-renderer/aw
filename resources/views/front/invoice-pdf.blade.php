@@ -170,7 +170,7 @@
             <div class="invoice-info">
                 <h2>INVOICE</h2>
                 <p><strong>Order Number:</strong> {{ $order->order_number }}</p>
-                <p><strong>Order Date:</strong> {{ $order->order_date->format('M d, Y') }}</p>
+                {{-- <p><strong>Order Date:</strong> {{ $order->order_date->format('M d, Y') }}</p> --}}
                 <p><strong>Status:</strong> <span class="status-badge status-{{ $order->status }}">{{ ucfirst($order->status) }}</span></p>
                 @if($payment)
                 <p><strong>Payment Status:</strong> <span class="status-badge status-{{ $payment->status === 'completed' ? 'confirmed' : 'pending' }}">{{ ucfirst($payment->status) }}</span></p>

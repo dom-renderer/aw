@@ -400,6 +400,14 @@
 <script src="{{ asset('assets/js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
+        console.log('Cart page JavaScript loaded');
+        
+        if ($('#checkoutForm').length === 0) {
+            console.error('Checkout form not found!');
+            return;
+        }
+        
+        console.log('Checkout form found');
         function updateCartTotals() {
             let subtotal = 0;
             $('.cart-item-row').each(function() {
@@ -569,53 +577,62 @@
             theme: 'classic',
             placeholder: 'Select country',
             width: '100%'
+        }).on('change', function() {
+            $('#state_id').val(null).trigger('change');
         });
 
         $('#state_id').select2({
-        allowClear: true,
-        placeholder: 'Select state',
-        theme: 'classic',
-        width: '100%',
-        ajax: {
-            url: "{{ route('state-list') }}",
-            type: "POST",
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    searchQuery: params.term,
-                    page: params.page || 1,
-                    country_id: $('#country_id').val(),
-                    _token: "{{ csrf_token() }}"
-                };
-            },
-            processResults: function(data, params) {
-                params.page = params.page || 1;
-                return {
-                    results: $.map(data.items, function(item) {
-                        return {
-                            id: item.id,
-                            text: item.text
-                        };
-                    }),
-                    pagination: {
-                        more: data.pagination.more
-                    }
-                };
-            },
-            cache: true
-        }
-    });
+            allowClear: true,
+            placeholder: 'Select state',
+            theme: 'classic',
+            width: '100%',
+            ajax: {
+                url: "{{ route('state-list') }}",
+                type: "POST",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        searchQuery: params.term,
+                        page: params.page || 1,
+                        country_id: $('#country_id').val(),
+                        _token: "{{ csrf_token() }}"
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: $.map(data.items, function(item) {
+                            return {
+                                id: item.id,
+                                text: item.text
+                            };
+                        }),
+                        pagination: {
+                            more: data.pagination.more
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
 
-        $('.payment-method').on('change', function() {
-            if ($(this).val() === 'credit_debit_card') {
+        function toggleCardDetails() {
+            const paymentMethod = $('input[name="payment_method"]:checked').val();
+            if (paymentMethod === 'credit_debit_card') {
                 $('#cardDetails').show();
                 $('#card_number, #expiry_date, #cvv, #cardholder_name').prop('required', true);
             } else {
                 $('#cardDetails').hide();
-                $('#card_number, #expiry_date, #cvv, #cardholder_name').prop('required', false);
+                $('#card_number, #expiry_date, #cvv, #cardholder_name').prop('required', false).val('');
             }
+        }
+
+        $('.payment-method').on('change', function() {
+            toggleCardDetails();
         });
+
+        toggleCardDetails();
 
         $('#card_number').on('input', function() {
             let value = $(this).val().replace(/\s/g, '');
@@ -660,8 +677,22 @@
             };
 
             $.each(requiredFields, function(field, label) {
-                const value = $('#' + field).val();
-                if (!value || value.trim() === '') {
+                let value = '';
+                if (field === 'country_id' || field === 'state_id') {
+                    try {
+                        if ($('#' + field).data('select2')) {
+                            value = $('#' + field).select2('val');
+                        } else {
+                            value = $('#' + field).val();
+                        }
+                    } catch(e) {
+                        value = $('#' + field).val();
+                    }
+                } else {
+                    value = $('#' + field).val();
+                }
+                
+                if (!value || (typeof value === 'string' && value.trim() === '') || value === null) {
                     errors.push(label + ' is required');
                     isValid = false;
                     $('#' + field).addClass('is-invalid');
@@ -726,29 +757,58 @@
             $(this).removeClass('is-invalid');
         });
 
-        $('#checkoutForm').on('submit', function(e) {
-            e.preventDefault();
+        function submitOrderForm() {
+            console.log('submitOrderForm called');
 
-            if (!validateForm()) {
+            const validationResult = validateForm();
+            console.log('Validation result:', validationResult);
+            
+            if (!validationResult) {
+                console.log('Validation failed - stopping submission');
                 return false;
             }
+            
+            console.log('Validation passed - proceeding with submission');
 
             const btn = $('#placeOrderBtn');
             const btnText = btn.find('.btn-text');
             const btnLoading = btn.find('.btn-loading');
+
+            if (btn.length === 0) {
+                console.error('Place order button not found');
+                alert('Error: Form button not found. Please refresh the page.');
+                return false;
+            }
 
             btn.prop('disabled', true);
             btnText.addClass('d-none');
             btnLoading.removeClass('d-none');
             $('#checkoutErrors').addClass('d-none');
 
-            const formData = $(this).serialize();
-
+            $('#country_id, #state_id').each(function() {
+                try {
+                    if ($(this).data('select2')) {
+                        const select2Val = $(this).select2('val');
+                        if (select2Val) {
+                            $(this).val(select2Val);
+                        }
+                    }
+                } catch(e) {
+                    console.log('Select2 error:', e);
+                }
+            });
+            
+            const formData = $('#checkoutForm').serialize();
+            const formAction = $('#checkoutForm').attr('action');
+            
+            console.log('Submitting form to:', formAction);
+            
             $.ajax({
-                url: $(this).attr('action'),
+                url: formAction,
                 method: 'POST',
                 data: formData,
                 success: function(response) {
+                    console.log('Response received:', response);
                     if (response.success && response.order_id) {
                         window.location.href = response.redirect_url;
                     } else {
@@ -756,9 +816,14 @@
                         btn.prop('disabled', false);
                         btnText.removeClass('d-none');
                         btnLoading.addClass('d-none');
+                        $('html, body').animate({
+                            scrollTop: $('#checkoutErrors').offset().top - 100
+                        }, 500);
                     }
                 },
-                error: function(xhr) {
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                    console.error('Response:', xhr.responseText);
                     let errors = [];
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
                         $.each(xhr.responseJSON.errors, function(field, messages) {
@@ -781,7 +846,31 @@
                     btnLoading.addClass('d-none');
                 }
             });
-        });
+            
+            return false;
+        }
+
+        if ($('#checkoutForm').length > 0) {
+            $('#checkoutForm').on('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Form submit event triggered');
+                submitOrderForm();
+                return false;
+            });
+
+            $(document).on('click', '#placeOrderBtn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Place order button clicked');
+                submitOrderForm();
+                return false;
+            });
+            
+            console.log('Form event handlers attached');
+        } else {
+            console.warn('Checkout form not found - handlers not attached');
+        }
 
         updateCartCount();
     });

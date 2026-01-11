@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6">
                         <p class="p-18">Order Date</p>
-                        <p class="p-25">{{ $order->order_date->format('M d, Y') }}</p>
+                        {{-- <p class="p-25">{{ $order->order_date->format('M d, Y') }}</p> --}}
                     </div>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                                     <img src="{{ asset('front-theme/images/clock.svg') }}" class="me-2" alt="">Estimated Delivery:
                                 </h3>
                                 <div>
-                                    {{ $order->order_date->addDays(5)->format('M d') }} - {{ $order->order_date->addDays(7)->format('M d, Y') }}
+                                    {{-- {{ $order->order_date->addDays(5)->format('M d') }} - {{ $order->order_date->addDays(7)->format('M d, Y') }} --}}
                                 </div>
                                 <p class="p-16">Your order will be dispatched within 24 hours</p>
                             </div>
@@ -200,7 +200,7 @@
                                         <img src="{{ asset('front-theme/images/status-1.svg') }}" alt="">
                                     </div>
                                     <p class="title">Order Placed</p>
-                                    <p class="small">{{ $order->order_date->format('M d') }}</p>
+                                    {{-- <p class="small">{{ $order->order_date->format('M d') ?? '' }}</p> --}}
                                 </div>
                                 <div class="line"></div>
                                 <div class="step {{ in_array($order->status, ['confirmed', 'processing', 'packed', 'shipped', 'delivered']) ? 'active' : '' }}">

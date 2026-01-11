@@ -9,10 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     @if(isset($metaInfo))
-    <meta name="title" content="{{ $metaInfo['title'] }}">
-    <meta name="description" content="{{ $metaInfo['content'] }}">
-    <meta name="keywords" content="{{ $metaInfo['keywords'] }}">
-    <link rel="canonical" href="{{ $metaInfo['url'] }}">
+    <meta name="title" content="{{ $metaInfo['title'] ?? '' }}">
+    <meta name="description" content="{{ $metaInfo['content'] ?? '' }}">
+    <meta name="keywords" content="{{ $metaInfo['keywords'] ?? '' }}">
+    <link rel="canonical" href="{{ $metaInfo['url'] ?? '' }}">
     <meta name="robots" content="index, follow">
     @endif
 

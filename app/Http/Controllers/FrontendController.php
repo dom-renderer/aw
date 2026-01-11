@@ -1731,7 +1731,7 @@ class FrontendController extends Controller
 
             $warehouse = Warehouse::where('type', 1)->first();
             if (!$warehouse) {
-                throw new \Exception('No warehouse available');
+                throw new \Exception('Stock is not available in the warehouse.');
             }
 
             $order = Order::create([

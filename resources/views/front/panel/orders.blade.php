@@ -314,7 +314,7 @@
                                             @forelse($orders as $order)
                                             <tr>
                                                 <td>#{{ $order->order_number }}</td>
-                                                <td>{{ $order->order_date->format('M d, Y') }}</td>
+                                                {{-- <td>{{ $order->order_date->format('M d, Y') }}</td> --}}
                                                 <td>
                                                     <span class="status-badge status-{{ $order->status }}">
                                                         {{ ucfirst($order->status) }}

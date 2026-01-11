@@ -67,17 +67,21 @@ class OrderItem extends Model
 
     public function getUnitNameAttribute()
     {
-        if ($this->unit_name && is_string($this->unit_name)) {
-            return $this->unit_name;
+        $unitName = $this->getRawOriginal('unit_name');
+
+        if ($unitName && is_string($unitName)) {
+            return $unitName;
         }
 
         if ($this->unit_type == 0) {
             $baseUnit = ProductBaseUnit::with('unit')->find($this->unit_id);
+
             if ($baseUnit && $baseUnit->unit) {
                 return $baseUnit->unit->title;
             }
         } else {
             $addUnit = ProductAdditionalUnit::with('unit')->find($this->unit_id);
+
             if ($addUnit && $addUnit->unit) {
                 return $addUnit->unit->title;
             }
@@ -85,4 +89,5 @@ class OrderItem extends Model
 
         return 'Unit';
     }
+
 }
