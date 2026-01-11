@@ -14,6 +14,8 @@ Route::post('cart/update', [\App\Http\Controllers\FrontendController::class, 'up
 Route::post('cart/remove', [\App\Http\Controllers\FrontendController::class, 'removeFromCart'])->name('cart.remove');
 Route::get('cart/count', [\App\Http\Controllers\FrontendController::class, 'getCartCount'])->name('cart.count');
 Route::post('cart/item-quantity', [\App\Http\Controllers\FrontendController::class, 'getCartItemQuantity'])->name('cart.item-quantity');
+Route::post('order/place', [\App\Http\Controllers\FrontendController::class, 'placeOrder'])->name('order.place');
+Route::get('order/confirmation/{order_number}', [\App\Http\Controllers\FrontendController::class, 'orderConfirmation'])->name('order.confirmation');
 
 Route::get('/c/{category_slug}/{short_url}', [\App\Http\Controllers\FrontendController::class, 'category'])->name('category.index');
 Route::get('/p/{product_slug}/{short_url}/{variant?}', [\App\Http\Controllers\FrontendController::class, 'product'])->name('product.index');

@@ -177,81 +177,131 @@
                 <div class="col-lg-6 col-xl-6 col-xxl-4 col-md-12">
                     <div class="c-right-block">
                         <h2 class="h-30 mb-4">Checkout</h2>
-                        <form action="">
+                        <form id="checkoutForm" action="{{ route('order.place') }}" method="POST">
+                            @csrf
                             <div class="shopping-text bdr-clr crt-pading mt-30">
                                 <h3 class="h-24 mb-3">Shipping Information</h3>
                                 <div class="row mb-3">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <label for="exampleInputEmail1" class="form-label">First Name</label>
-                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                        <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control fm-inpt" id="first_name" name="first_name" value="{{ auth()->guard('customer')->check() ? auth()->guard('customer')->user()->name : '' }}" required>
                                     </div>
-                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <label for="exampleInputEmail1" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control fm-inpt" id="last_name" name="last_name" required>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
-                                        <label for="exampleInputEmail1" class="form-label">Company Name</label>
-                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
-                                    </div>                                    
+                                        <label for="company_name" class="form-label">Company Name</label>
+                                        <input type="text" class="form-control fm-inpt" id="company_name" name="company_name">
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
-                                        <label for="exampleInputEmail1" class="form-label">Street Address</label>
-                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
-                                    </div>                                    
+                                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control fm-inpt" id="email" name="email" value="{{ auth()->guard('customer')->check() ? auth()->guard('customer')->user()->email : '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control fm-inpt" id="phone" name="phone" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="address_line_1" class="form-label">Street Address <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control fm-inpt" id="address_line_1" name="address_line_1" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="address_line_2" class="form-label">Address Line 2</label>
+                                        <input type="text" class="form-control fm-inpt" id="address_line_2" name="address_line_2">
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <label for="exampleInputEmail1" class="form-label">City</label>
-                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
+                                        <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control fm-inpt" id="city" name="city" required>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <label for="exampleInputEmail1" class="form-label">Postal Code</label>
-                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                        <label for="zipcode" class="form-label">Postal Code <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control fm-inpt" id="zipcode" name="zipcode" required>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
-                                        <label for="exampleInputEmail1" class="form-label">Phone Number</label>
-                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
-                                    </div>                                    
+                                        <label for="country_id" class="form-label">Country <span class="text-danger">*</span></label>
+                                        <select class="form-control fm-inpt" id="country_id" name="country_id" required>
+                                            <option value="">Select Country</option>
+                                            @foreach(\App\Models\Country::all() as $country)
+                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="state_id" class="form-label">State <span class="text-danger">*</span></label>
+                                        <select class="form-control fm-inpt" id="state_id" name="state_id" required>
+                                            <option value="">Select State</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <label for="customer_notes" class="form-label">Order Notes</label>
+                                        <textarea class="form-control fm-inpt" id="customer_notes" name="customer_notes" rows="3"></textarea>
+                                    </div>
                                 </div>
                             </div>
                             <div class="shop-info bdr-clr crt-pading mt-30">
-                                <h3 class="h-24 mb-3">Shipping Information</h3>
+                                <h3 class="h-24 mb-3">Payment Method</h3>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                               <img src="images/credit.png" alt=""> &nbsp; Credit/Debit Card
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input payment-method" type="radio" name="payment_method" id="payment_card" value="credit_debit_card" checked>
+                                            <label class="form-check-label" for="payment_card">
+                                                <img src="{{ asset('front-theme/images/credit.png') }}" alt="" style="height: 20px;"> &nbsp; Credit/Debit Card
                                             </label>
+                                        </div>
+                                        <div id="cardDetails" class="payment-details">
+                                            <div class="row mb-3">
+                                                <div class="col-lg-12">
+                                                    <label for="card_number" class="form-label">Card Number <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control fm-inpt" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-6">
+                                                    <label for="expiry_date" class="form-label">Expiration Date <span class="text-danger">*</span></label>
+                                                    <input type="month" class="form-control fm-inpt" id="expiry_date" name="expiry_date">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label for="cvv" class="form-label">CVV <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control fm-inpt" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-12">
+                                                    <label for="cardholder_name" class="form-label">Cardholder Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control fm-inpt" id="cardholder_name" name="cardholder_name">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
-                                        <label for="exampleInputEmail1" class="form-label">Postal Code</label>
-                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
+                                        <div class="form-check">
+                                            <input class="form-check-input payment-method" type="radio" name="payment_method" id="payment_cod" value="cash_on_delivery">
+                                            <label class="form-check-label" for="payment_cod">
+                                                Cash on Delivery
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <label for="exampleInputEmail1" class="form-label">Expiration Date</label>
-                                        <input type="date" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
-                                    </div>
-                                     <div class="col-lg-6">
-                                        <label for="exampleInputEmail1" class="form-label">CVV</label>
-                                        <input type="number" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="lname">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-lg-12">
-                                        <label for="exampleInputEmail1" class="form-label">Cardholder Name</label>
-                                        <input type="text" class="form-control fm-inpt" id="exampleInputEmail1" aria-describedby="fname">
-                                    </div>                                    
                                 </div>
                             </div>
                             <div class="order-summry bdr-clr crt-pading mt-30">
@@ -259,31 +309,33 @@
                                 <ul>
                                     <li>
                                         <span>Subtotal</span>
-                                        <span>$434.94</span>
-                                    </li>
-                                    <li>
-                                        <span>Bulk Discount</span>
-                                        <span>-$43.49</span>
+                                        <span id="checkoutSubtotal">$0.00</span>
                                     </li>
                                     <li>
                                         <span>Shipping</span>
-                                        <span>$25.00</span>
+                                        <span id="checkoutShipping">$0.00</span>
                                     </li>
                                     <li>
-                                        <span>Tax</span>
-                                        <span>$33.32</span>
+                                        <span>Tax Estimate</span>
+                                        <span id="checkoutTax">$0.00</span>
                                     </li>
                                 </ul>
                                 <div class="crt-total d-flex justify-content-between gap-2">
                                     <p class="h-24">Total</p>
-                                    <p class="h-24">$449.77</p>
+                                    <p class="h-24" id="checkoutTotal">$0.00</p>
                                 </div>
                                 <div class="crt-estimate">
-                                    <img src="images/location.png" alt="">
-                                    Estimated Delivery: <span> March 15-17 2025</span>
+                                    <img src="{{ asset('front-theme/images/location.png') }}" alt="">
+                                    Estimated Delivery: <span id="estimatedDelivery">Within 5-7 business days</span>
                                 </div>
                                 <div class="crt-place">
-                                    <a href="" class="btn cart-btn d-block">Place Order</a>
+                                    <button type="submit" class="btn cart-btn d-block w-100" id="placeOrderBtn">
+                                        <span class="btn-text">Place Order</span>
+                                        <span class="btn-loading d-none">
+                                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                            Processing...
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -491,6 +543,111 @@
                 }
             });
         }
+
+        updateCartTotals();
+
+        $('#country_id').on('change', function() {
+            const countryId = $(this).val();
+            if (countryId) {
+                $.ajax({
+                    url: '{{ route('state-list') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        country_id: countryId
+                    },
+                    success: function(response) {
+                        const stateSelect = $('#state_id');
+                        stateSelect.html('<option value="">Select State</option>');
+                        if (response.states) {
+                            $.each(response.states, function(key, value) {
+                                stateSelect.append('<option value="' + key + '">' + value + '</option>');
+                            });
+                        }
+                    }
+                });
+            } else {
+                $('#state_id').html('<option value="">Select State</option>');
+            }
+        });
+
+        $('.payment-method').on('change', function() {
+            if ($(this).val() === 'credit_debit_card') {
+                $('#cardDetails').show();
+                $('#card_number, #expiry_date, #cvv, #cardholder_name').prop('required', true);
+            } else {
+                $('#cardDetails').hide();
+                $('#card_number, #expiry_date, #cvv, #cardholder_name').prop('required', false);
+            }
+        });
+
+        $('#card_number').on('input', function() {
+            let value = $(this).val().replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            $(this).val(formattedValue);
+        });
+
+        $('#cvv').on('input', function() {
+            $(this).val($(this).val().replace(/\D/g, ''));
+        });
+
+        function updateCheckoutTotals() {
+            const subtotal = parseFloat($('#cartSubtotalText').text().replace('$', '').replace(',', '')) || 0;
+            const shipping = 0;
+            const tax = (subtotal * 0.1);
+            const total = subtotal + shipping + tax;
+
+            $('#checkoutSubtotal').text('$' + subtotal.toFixed(2));
+            $('#checkoutShipping').text('$' + shipping.toFixed(2));
+            $('#checkoutTax').text('$' + tax.toFixed(2));
+            $('#checkoutTotal').text('$' + total.toFixed(2));
+        }
+
+        updateCheckoutTotals();
+        setInterval(updateCheckoutTotals, 1000);
+
+        $('#checkoutForm').on('submit', function(e) {
+            e.preventDefault();
+
+            const btn = $('#placeOrderBtn');
+            const btnText = btn.find('.btn-text');
+            const btnLoading = btn.find('.btn-loading');
+
+            btn.prop('disabled', true);
+            btnText.addClass('d-none');
+            btnLoading.removeClass('d-none');
+
+            const formData = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success && response.order_id) {
+                        window.location.href = response.redirect_url;
+                    } else {
+                        alert(response.message || 'Error placing order');
+                        btn.prop('disabled', false);
+                        btnText.removeClass('d-none');
+                        btnLoading.addClass('d-none');
+                    }
+                },
+                error: function(xhr) {
+                    let message = 'Error placing order';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        const errors = Object.values(xhr.responseJSON.errors).flat();
+                        message = errors.join('\n');
+                    }
+                    alert(message);
+                    btn.prop('disabled', false);
+                    btnText.removeClass('d-none');
+                    btnLoading.addClass('d-none');
+                }
+            });
+        });
 
         updateCartCount();
     });

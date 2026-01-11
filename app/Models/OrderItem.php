@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductBaseUnit;
+use App\Models\ProductAdditionalUnit;
 
 class OrderItem extends Model
 {
@@ -61,5 +63,26 @@ class OrderItem extends Model
     {
         $this->subtotal = ($this->quantity * $this->price_per_unit) - $this->discount_amount;
         return $this;
+    }
+
+    public function getUnitNameAttribute()
+    {
+        if ($this->unit_name && is_string($this->unit_name)) {
+            return $this->unit_name;
+        }
+
+        if ($this->unit_type == 0) {
+            $baseUnit = ProductBaseUnit::with('unit')->find($this->unit_id);
+            if ($baseUnit && $baseUnit->unit) {
+                return $baseUnit->unit->title;
+            }
+        } else {
+            $addUnit = ProductAdditionalUnit::with('unit')->find($this->unit_id);
+            if ($addUnit && $addUnit->unit) {
+                return $addUnit->unit->title;
+            }
+        }
+
+        return 'Unit';
     }
 }

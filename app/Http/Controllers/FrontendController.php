@@ -19,7 +19,13 @@ use App\Models\Inventory;
 use App\Models\ProductBaseUnit;
 use App\Models\ProductAdditionalUnit;
 use App\Models\ProductTierPricing;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Warehouse;
+use App\Models\Unit;
+use App\Services\PaymentService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class FrontendController extends Controller
 {
@@ -1633,5 +1639,307 @@ class FrontendController extends Controller
         }
 
         $guestCart->delete();
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address_line_1' => 'required|string|max:255',
+            'address_line_2' => 'nullable|string|max:255',
+            'city' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:20',
+            'country_id' => 'required|exists:countries,id',
+            'state_id' => 'required|exists:states,id',
+            'payment_method' => 'required|in:credit_debit_card,cash_on_delivery',
+            'customer_notes' => 'nullable|string|max:1000',
+            'card_number' => 'required_if:payment_method,credit_debit_card|nullable|string|max:19',
+            'expiry_date' => 'required_if:payment_method,credit_debit_card|nullable|string',
+            'cvv' => 'required_if:payment_method,credit_debit_card|nullable|string|max:4',
+            'cardholder_name' => 'required_if:payment_method,credit_debit_card|nullable|string|max:255',
+        ]);
+
+        $loggedIn = auth()->guard('customer')->check();
+        $sessionId = $request->session()->getId();
+
+        $cart = null;
+        if ($loggedIn) {
+            $customerId = auth()->guard('customer')->id();
+            $cart = Cart::with('items.product', 'items.productVariant')
+                ->where('customer_id', $customerId)
+                ->whereNull('converted_to_order_id')
+                ->latest('id')
+                ->first();
+        } else {
+            $cart = Cart::with('items.product', 'items.productVariant')
+                ->where('session_id', $sessionId)
+                ->whereNull('customer_id')
+                ->whereNull('converted_to_order_id')
+                ->latest('id')
+                ->first();
+        }
+
+        if (!$cart || $cart->items()->count() == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Your cart is empty'
+            ], 400);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $customer = null;
+            if ($loggedIn) {
+                $customer = auth()->guard('customer')->user();
+            } else {
+                $existingUser = User::where('email', $request->email)->first();
+                if ($existingUser) {
+                    $customer = $existingUser;
+                } else {
+                    $customer = User::create([
+                        'name' => $request->first_name . ' ' . $request->last_name,
+                        'email' => $request->email,
+                        'password' => Hash::make(Str::random(16)),
+                        'status' => 1,
+                        'email_verified_at' => now(),
+                    ]);
+                }
+            }
+
+            $city = City::where('state_id', $request->state_id)->first();
+            if (!$city) {
+                $city = City::where('country_id', $request->country_id)->first();
+            }
+
+            $location = Location::create([
+                'customer_id' => $customer->id,
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'code' => 'LOC-' . time(),
+                'address_line_1' => $request->address_line_1,
+                'address_line_2' => $request->address_line_2,
+                'country_id' => $request->country_id,
+                'state_id' => $request->state_id,
+                'city_id' => $city ? $city->id : null,
+                'zipcode' => $request->zipcode,
+                'email' => $request->email,
+                'contact_number' => $request->phone,
+            ]);
+
+            $warehouse = Warehouse::where('type', 1)->first();
+            if (!$warehouse) {
+                throw new \Exception('No warehouse available');
+            }
+
+            $order = Order::create([
+                'customer_id' => $customer->id,
+                'order_number' => Order::generateOrderNumber(),
+                'location_id' => $location->id,
+                'warehouse_id' => $warehouse->id,
+                'status' => 'pending',
+                'payment_status' => 'pending',
+                'currency' => 'USD',
+                'shipping_address_line_1' => $request->address_line_1,
+                'shipping_address_line_2' => $request->address_line_2,
+                'shipping_country_id' => $request->country_id,
+                'shipping_state_id' => $request->state_id,
+                'shipping_city_id' => $city ? $city->id : null,
+                'shipping_zipcode' => $request->zipcode,
+                'shipping_phone' => $request->phone,
+                'shipping_email' => $request->email,
+                'billing_address_line_1' => $request->address_line_1,
+                'billing_address_line_2' => $request->address_line_2,
+                'billing_country_id' => $request->country_id,
+                'billing_state_id' => $request->state_id,
+                'billing_city_id' => $location->city_id,
+                'billing_zipcode' => $request->zipcode,
+                'billing_phone' => $request->phone,
+                'billing_email' => $request->email,
+                'customer_notes' => $request->customer_notes,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            $subtotal = 0;
+            $discountAmount = 0;
+
+            foreach ($cart->items as $cartItem) {
+                $product = $cartItem->product;
+                $variant = $cartItem->productVariant;
+                $quantity = (float) $cartItem->quantity;
+                $unitType = $cartItem->unit_type;
+                $unitId = $cartItem->unit_id;
+
+                $unit = null;
+                $unitName = 'Unit';
+                if ($unitType == 0) {
+                    $baseUnit = ProductBaseUnit::with('unit')->find($unitId);
+                    if ($baseUnit && $baseUnit->unit) {
+                        $unit = $baseUnit;
+                        $unitName = $baseUnit->unit->title;
+                    }
+                } else {
+                    $addUnit = ProductAdditionalUnit::with('unit')->find($unitId);
+                    if ($addUnit && $addUnit->unit) {
+                        $unit = $addUnit;
+                        $unitName = $addUnit->unit->title;
+                    }
+                }
+
+                $pricingQuery = ProductTierPricing::where('product_id', $product->id)
+                    ->where('unit_type', $unitType)
+                    ->where('product_additional_unit_id', $unitId);
+
+                if ($variant) {
+                    $pricingQuery->where('product_variant_id', $variant->id);
+                } else {
+                    $pricingQuery->whereNull('product_variant_id');
+                }
+
+                $pricingRecords = $pricingQuery->orderBy('min_qty')->get();
+
+                $pricePerUnit = 0;
+                $discountPerUnit = 0;
+
+                if ($pricingRecords->count() > 0) {
+                    $applicablePricing = null;
+                    foreach ($pricingRecords as $pricing) {
+                        if ($pricing->pricing_type == 1) {
+                            $applicablePricing = $pricing;
+                            break;
+                        } else {
+                            if ($quantity >= $pricing->min_qty && ($pricing->max_qty == 0 || $quantity <= $pricing->max_qty)) {
+                                $applicablePricing = $pricing;
+                            }
+                        }
+                    }
+
+                    if (!$applicablePricing && $pricingRecords->first()) {
+                        $applicablePricing = $pricingRecords->first();
+                    }
+
+                    if ($applicablePricing) {
+                        $mrp = (float) $applicablePricing->price_per_unit;
+                        if ($applicablePricing->discount_type == 1) {
+                            $discountPerUnit = $mrp * ($applicablePricing->discount_amount / 100);
+                        } else {
+                            $discountPerUnit = (float) $applicablePricing->discount_amount;
+                        }
+                        $pricePerUnit = max(0, $mrp - $discountPerUnit);
+                    }
+                }
+
+                if ($pricePerUnit == 0) {
+                    $pricePerUnit = (float) $product->single_product_price ?? 0;
+                }
+
+                $itemSubtotal = $pricePerUnit * $quantity;
+                $itemDiscount = $discountPerUnit * $quantity;
+                $itemTax = $itemSubtotal * 0.1;
+                $itemTotal = $itemSubtotal + $itemTax;
+
+                $subtotal += $itemSubtotal;
+                $discountAmount += $itemDiscount;
+
+                $orderItem = OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'product_variant_id' => $variant ? $variant->id : null,
+                    'product_name' => $variant ? $variant->name : $product->name,
+                    'product_sku' => $variant ? ($variant->sku ?? $product->sku) : $product->sku,
+                    'variant_name' => $variant ? $variant->short_url : null,
+                    'unit_type' => $unitType,
+                    'unit_id' => $unitId,
+                    'unit_name' => $unitName,
+                    'product_type' => $product->type,
+                    'quantity' => $quantity,
+                    'price_per_unit' => $pricePerUnit,
+                    'discount_amount' => $itemDiscount,
+                    'tax_amount' => $itemTax,
+                    'subtotal' => $itemSubtotal,
+                    'total' => $itemTotal,
+                ]);
+            }
+
+            $shippingAmount = 0;
+            $taxAmount = $subtotal * 0.1;
+            $totalAmount = $subtotal - $discountAmount + $taxAmount + $shippingAmount;
+
+            $order->subtotal = $subtotal;
+            $order->discount_amount = $discountAmount;
+            $order->tax_amount = $taxAmount;
+            $order->shipping_amount = $shippingAmount;
+            $order->total_amount = $totalAmount;
+            $order->due_amount = $totalAmount;
+            $order->save();
+
+            $paymentData = [];
+            if ($request->payment_method === 'credit_debit_card') {
+                $paymentData = [
+                    'card_number' => str_replace(' ', '', $request->card_number),
+                    'expiry_date' => $request->expiry_date,
+                    'cvv' => $request->cvv,
+                    'cardholder_name' => $request->cardholder_name,
+                ];
+            }
+
+            $paymentService = new PaymentService();
+            $paymentResult = $paymentService->processPayment($order, $request->payment_method, $paymentData);
+
+            if (!$paymentResult['success']) {
+                throw new \Exception($paymentResult['message'] ?? 'Payment processing failed');
+            }
+
+            $order->status = 'confirmed';
+            $order->confirmed_at = now();
+            $order->save();
+
+            $cart->converted_to_order_id = $order->id;
+            $cart->save();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'redirect_url' => route('order.confirmation', ['order_number' => $order->order_number])
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function orderConfirmation(Request $request, $order_number)
+    {
+        $order = Order::with([
+            'items.product.primaryImage',
+            'items.variant.variantImage',
+            'customer',
+            'location.country',
+            'location.state',
+            'location.city',
+            'warehouse'
+        ])->where('order_number', $order_number)->firstOrFail();
+
+        $loggedIn = auth()->guard('customer')->check();
+        if ($loggedIn) {
+            $customerId = auth()->guard('customer')->id();
+            if ($order->customer_id != $customerId) {
+                abort(403, 'Unauthorized access to this order');
+            }
+        }
+
+        $payment = \App\Models\Payment::where('order_id', $order->id)->latest()->first();
+
+        return view('front.order-confirmation', compact('order', 'payment'));
     }
 }
