@@ -203,7 +203,7 @@
                                         <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control fm-inpt" id="first_name" name="first_name" value="{{ auth()->guard('customer')->check() ? auth()->guard('customer')->user()->name : '' }}" required>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control fm-inpt" id="last_name" name="last_name" required>
                                     </div>
@@ -230,13 +230,13 @@
                                     <div class="col-lg-12">
                                         <label for="address_line_1" class="form-label">Street Address <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control fm-inpt" id="address_line_1" name="address_line_1" required>
-                                    </div>
+                                    </div>                                    
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
                                         <label for="address_line_2" class="form-label">Address Line 2</label>
                                         <input type="text" class="form-control fm-inpt" id="address_line_2" name="address_line_2">
-                                    </div>
+                                    </div>                                    
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -257,7 +257,7 @@
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div>                                    
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-12">
@@ -289,14 +289,14 @@
                                                 <div class="col-lg-12">
                                                     <label for="card_number" class="form-label">Card Number <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control fm-inpt" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-lg-6">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
                                                     <label for="expiry_date" class="form-label">Expiration Date <span class="text-danger">*</span></label>
                                                     <input type="month" class="form-control fm-inpt" id="expiry_date" name="expiry_date">
-                                                </div>
-                                                <div class="col-lg-6">
+                                    </div>
+                                     <div class="col-lg-6">
                                                     <label for="cvv" class="form-label">CVV <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control fm-inpt" id="cvv" name="cvv" placeholder="123" maxlength="4">
                                                 </div>
@@ -318,7 +318,7 @@
                                                 Cash on Delivery
                                             </label>
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="order-summry bdr-clr crt-pading mt-30">

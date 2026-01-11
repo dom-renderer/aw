@@ -1969,4 +1969,215 @@ class FrontendController extends Controller
         
         return $pdf->download('invoice-' . $order->order_number . '.pdf');
     }
+
+    public function orders(Request $request)
+    {
+        if (!auth()->guard('customer')->check()) {
+            return redirect()->route('login');
+        }
+
+        $customerId = auth()->guard('customer')->id();
+
+        $query = Order::with(['items'])
+            ->where('customer_id', $customerId)
+            ->orderBy('order_date', 'desc');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('order_date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('order_date', '<=', $request->date_to);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('order_number', 'like', '%' . $search . '%');
+            });
+        }
+
+        $orders = $query->paginate(10)->withQueryString();
+
+        $allOrders = Order::where('customer_id', $customerId)->get();
+
+        $statistics = [
+            'total_orders' => $allOrders->count(),
+            'total_spent' => $allOrders->sum('total_amount'),
+            'average_order' => $allOrders->count() > 0 ? $allOrders->sum('total_amount') / $allOrders->count() : 0,
+            'in_transit' => $allOrders->whereIn('status', ['shipped', 'processing', 'packed'])->count(),
+        ];
+
+        return view('front.panel.orders', compact('orders', 'statistics'));
+    }
+
+    public function reorder(Request $request)
+    {
+        if (!auth()->guard('customer')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please login to reorder'
+            ], 401);
+        }
+
+        $request->validate([
+            'order_id' => 'required|exists:orders,id'
+        ]);
+
+        $customerId = auth()->guard('customer')->id();
+        $order = Order::with('items.product', 'items.productVariant')->findOrFail($request->order_id);
+
+        if ($order->customer_id != $customerId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized access'
+            ], 403);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $sessionId = $request->session()->getId();
+            $cart = Cart::where('customer_id', $customerId)
+                ->whereNull('converted_to_order_id')
+                ->latest('id')
+                ->first();
+
+            if (!$cart) {
+                $cart = Cart::create([
+                    'customer_id' => $customerId,
+                    'session_id' => $sessionId,
+                ]);
+            }
+
+            foreach ($order->items as $orderItem) {
+                $product = $orderItem->product;
+                $variant = $orderItem->productVariant;
+
+                if (!$product) {
+                    continue;
+                }
+
+                $existingItem = CartItem::where('cart_id', $cart->id)
+                    ->where('product_id', $product->id)
+                    ->where('product_variant_id', $variant ? $variant->id : null)
+                    ->where('unit_type', $orderItem->unit_type)
+                    ->where('unit_id', $orderItem->unit_id)
+                    ->first();
+
+                if ($existingItem) {
+                    $existingItem->quantity = (float) $existingItem->quantity + (float) $orderItem->quantity;
+                    $existingItem->save();
+                } else {
+                    CartItem::create([
+                        'cart_id' => $cart->id,
+                        'product_id' => $product->id,
+                        'product_variant_id' => $variant ? $variant->id : null,
+                        'unit_type' => $orderItem->unit_type,
+                        'unit_id' => $orderItem->unit_id,
+                        'quantity' => $orderItem->quantity,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Items added to cart successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding items to cart: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function exportOrders(Request $request)
+    {
+        if (!auth()->guard('customer')->check()) {
+            return redirect()->route('login');
+        }
+
+        $customerId = auth()->guard('customer')->id();
+
+        $query = Order::with(['items', 'location.country', 'location.state', 'location.city'])
+            ->where('customer_id', $customerId)
+            ->orderBy('order_date', 'desc');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('order_date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('order_date', '<=', $request->date_to);
+        }
+
+        $orders = $query->get();
+
+        $filename = 'orders-export-' . date('Y-m-d') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($orders) {
+            $file = fopen('php://output', 'w');
+            
+            fputcsv($file, [
+                'Order Number',
+                'Order Date',
+                'Status',
+                'Payment Status',
+                'Items Count',
+                'Subtotal',
+                'Discount',
+                'Tax',
+                'Shipping',
+                'Total Amount',
+                'Shipping Address',
+                'Shipping City',
+                'Shipping State',
+                'Shipping Zipcode',
+                'Shipping Phone',
+                'Shipping Email'
+            ]);
+
+            foreach ($orders as $order) {
+                fputcsv($file, [
+                    $order->order_number,
+                    $order->order_date->format('Y-m-d'),
+                    $order->status,
+                    $order->payment_status,
+                    $order->items->sum('quantity'),
+                    $order->subtotal,
+                    $order->discount_amount,
+                    $order->tax_amount,
+                    $order->shipping_amount,
+                    $order->total_amount,
+                    $order->shipping_address_line_1,
+                    $order->shipping_city_id ? \App\Models\City::find($order->shipping_city_id)->name ?? '' : '',
+                    $order->shipping_state_id ? \App\Models\State::find($order->shipping_state_id)->name ?? '' : '',
+                    $order->shipping_zipcode,
+                    $order->shipping_phone,
+                    $order->shipping_email,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

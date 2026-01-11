@@ -175,15 +175,15 @@
                 </div>
                 <ul>
                     <li>
-                        <a href="" class="btn">
+                        <a href="{{ route('orders') }}" class="btn">
                             <img src="{{ asset('front-theme/images/menuicon-1.svg') }}" alt="">
-                            <span>Dashboard</span>
+                            <span>Order History</span>
                         </a>
                     </li>
                     <li>
-                        <a href="" class="btn">
+                        <a href="{{ route('wishlist') }}" class="btn">
                             <img src="{{ asset('front-theme/images/menuicon-3.svg') }}" alt="">
-                            <span>Order History</span>
+                            <span>Wishlist</span>
                         </a>
                     </li>
                     <li>

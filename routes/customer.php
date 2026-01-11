@@ -39,6 +39,10 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::post('addresses', [\App\Http\Controllers\FrontendController::class, 'storeAddress'])->name('addresses.store');
     Route::put('addresses/{id}', [\App\Http\Controllers\FrontendController::class, 'updateAddress'])->name('addresses.update');
     Route::delete('addresses/{id}', [\App\Http\Controllers\FrontendController::class, 'deleteAddress'])->name('addresses.delete');
+    
+    Route::get('orders', [\App\Http\Controllers\FrontendController::class, 'orders'])->name('orders');
+    Route::post('orders/reorder', [\App\Http\Controllers\FrontendController::class, 'reorder'])->name('orders.reorder');
+    Route::get('orders/export', [\App\Http\Controllers\FrontendController::class, 'exportOrders'])->name('orders.export');
 });
 
 Route::post('state-list', [\App\Helpers\Helper::class, 'getStatesByCountry'])->name('state-list');
