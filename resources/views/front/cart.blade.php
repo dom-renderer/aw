@@ -1,7 +1,23 @@
 @extends('front.layout')
 
 @push('css')
-
+<link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
+<style>
+    .is-invalid {
+        border-color: #dc3545 !important;
+    }
+    .is-invalid:focus {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+    #checkoutErrors {
+        margin-bottom: 20px;
+    }
+    #checkoutErrors ul {
+        margin-bottom: 0;
+        padding-left: 20px;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -179,6 +195,7 @@
                         <h2 class="h-30 mb-4">Checkout</h2>
                         <form id="checkoutForm" action="{{ route('order.place') }}" method="POST">
                             @csrf
+                            <div id="checkoutErrors" class="alert alert-danger d-none mb-3"></div>
                             <div class="shopping-text bdr-clr crt-pading mt-30">
                                 <h3 class="h-24 mb-3">Shipping Information</h3>
                                 <div class="row mb-3">
@@ -380,6 +397,7 @@
 @endsection
 
 @push('js')
+<script src="{{ asset('assets/js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         function updateCartTotals() {
@@ -546,30 +564,48 @@
 
         updateCartTotals();
 
-        $('#country_id').on('change', function() {
-            const countryId = $(this).val();
-            if (countryId) {
-                $.ajax({
-                    url: '{{ route('state-list') }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        country_id: countryId
-                    },
-                    success: function(response) {
-                        const stateSelect = $('#state_id');
-                        stateSelect.html('<option value="">Select State</option>');
-                        if (response.states) {
-                            $.each(response.states, function(key, value) {
-                                stateSelect.append('<option value="' + key + '">' + value + '</option>');
-                            });
-                        }
-                    }
-                });
-            } else {
-                $('#state_id').html('<option value="">Select State</option>');
-            }
+        $('#country_id').select2({
+            allowClear: true,
+            theme: 'classic',
+            placeholder: 'Select country',
+            width: '100%'
         });
+
+        $('#state_id').select2({
+        allowClear: true,
+        placeholder: 'Select state',
+        theme: 'classic',
+        width: '100%',
+        ajax: {
+            url: "{{ route('state-list') }}",
+            type: "POST",
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    searchQuery: params.term,
+                    page: params.page || 1,
+                    country_id: $('#country_id').val(),
+                    _token: "{{ csrf_token() }}"
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: $.map(data.items, function(item) {
+                        return {
+                            id: item.id,
+                            text: item.text
+                        };
+                    }),
+                    pagination: {
+                        more: data.pagination.more
+                    }
+                };
+            },
+            cache: true
+        }
+    });
 
         $('.payment-method').on('change', function() {
             if ($(this).val() === 'credit_debit_card') {
@@ -606,8 +642,96 @@
         updateCheckoutTotals();
         setInterval(updateCheckoutTotals, 1000);
 
+        function validateForm() {
+            let isValid = true;
+            const errors = [];
+            $('#checkoutErrors').addClass('d-none').html('');
+
+            const requiredFields = {
+                'first_name': 'First Name',
+                'last_name': 'Last Name',
+                'email': 'Email',
+                'phone': 'Phone Number',
+                'address_line_1': 'Street Address',
+                'city': 'City',
+                'zipcode': 'Postal Code',
+                'country_id': 'Country',
+                'state_id': 'State'
+            };
+
+            $.each(requiredFields, function(field, label) {
+                const value = $('#' + field).val();
+                if (!value || value.trim() === '') {
+                    errors.push(label + ' is required');
+                    isValid = false;
+                    $('#' + field).addClass('is-invalid');
+                } else {
+                    $('#' + field).removeClass('is-invalid');
+                }
+            });
+
+            const email = $('#email').val();
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errors.push('Please enter a valid email address');
+                isValid = false;
+                $('#email').addClass('is-invalid');
+            }
+
+            const paymentMethod = $('input[name="payment_method"]:checked').val();
+            if (paymentMethod === 'credit_debit_card') {
+                const cardFields = {
+                    'card_number': 'Card Number',
+                    'expiry_date': 'Expiration Date',
+                    'cvv': 'CVV',
+                    'cardholder_name': 'Cardholder Name'
+                };
+
+                $.each(cardFields, function(field, label) {
+                    const value = $('#' + field).val();
+                    if (!value || value.trim() === '') {
+                        errors.push(label + ' is required');
+                        isValid = false;
+                        $('#' + field).addClass('is-invalid');
+                    } else {
+                        $('#' + field).removeClass('is-invalid');
+                    }
+                });
+
+                const cardNumber = $('#card_number').val().replace(/\s/g, '');
+                if (cardNumber && (cardNumber.length < 13 || cardNumber.length > 19)) {
+                    errors.push('Card number must be between 13 and 19 digits');
+                    isValid = false;
+                    $('#card_number').addClass('is-invalid');
+                }
+
+                const cvv = $('#cvv').val();
+                if (cvv && (cvv.length < 3 || cvv.length > 4)) {
+                    errors.push('CVV must be 3 or 4 digits');
+                    isValid = false;
+                    $('#cvv').addClass('is-invalid');
+                }
+            }
+
+            if (errors.length > 0) {
+                $('#checkoutErrors').removeClass('d-none').html('<ul class="mb-0"><li>' + errors.join('</li><li>') + '</li></ul>');
+                $('html, body').animate({
+                    scrollTop: $('#checkoutErrors').offset().top - 100
+                }, 500);
+            }
+
+            return isValid;
+        }
+
+        $('#checkoutForm input, #checkoutForm select').on('blur', function() {
+            $(this).removeClass('is-invalid');
+        });
+
         $('#checkoutForm').on('submit', function(e) {
             e.preventDefault();
+
+            if (!validateForm()) {
+                return false;
+            }
 
             const btn = $('#placeOrderBtn');
             const btnText = btn.find('.btn-text');
@@ -616,6 +740,7 @@
             btn.prop('disabled', true);
             btnText.addClass('d-none');
             btnLoading.removeClass('d-none');
+            $('#checkoutErrors').addClass('d-none');
 
             const formData = $(this).serialize();
 
@@ -627,21 +752,30 @@
                     if (response.success && response.order_id) {
                         window.location.href = response.redirect_url;
                     } else {
-                        alert(response.message || 'Error placing order');
+                        $('#checkoutErrors').removeClass('d-none').html('<ul class="mb-0"><li>' + (response.message || 'Error placing order') + '</li></ul>');
                         btn.prop('disabled', false);
                         btnText.removeClass('d-none');
                         btnLoading.addClass('d-none');
                     }
                 },
                 error: function(xhr) {
-                    let message = 'Error placing order';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        message = xhr.responseJSON.message;
-                    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        const errors = Object.values(xhr.responseJSON.errors).flat();
-                        message = errors.join('\n');
+                    let errors = [];
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        $.each(xhr.responseJSON.errors, function(field, messages) {
+                            errors = errors.concat(messages);
+                            $('#' + field).addClass('is-invalid');
+                        });
+                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errors.push(xhr.responseJSON.message);
+                    } else {
+                        errors.push('Error placing order. Please try again.');
                     }
-                    alert(message);
+                    
+                    $('#checkoutErrors').removeClass('d-none').html('<ul class="mb-0"><li>' + errors.join('</li><li>') + '</li></ul>');
+                    $('html, body').animate({
+                        scrollTop: $('#checkoutErrors').offset().top - 100
+                    }, 500);
+                    
                     btn.prop('disabled', false);
                     btnText.removeClass('d-none');
                     btnLoading.addClass('d-none');

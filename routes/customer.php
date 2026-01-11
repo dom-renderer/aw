@@ -16,6 +16,7 @@ Route::get('cart/count', [\App\Http\Controllers\FrontendController::class, 'getC
 Route::post('cart/item-quantity', [\App\Http\Controllers\FrontendController::class, 'getCartItemQuantity'])->name('cart.item-quantity');
 Route::post('order/place', [\App\Http\Controllers\FrontendController::class, 'placeOrder'])->name('order.place');
 Route::get('order/confirmation/{order_number}', [\App\Http\Controllers\FrontendController::class, 'orderConfirmation'])->name('order.confirmation');
+Route::get('order/invoice/{order_number}', [\App\Http\Controllers\FrontendController::class, 'downloadInvoice'])->name('order.invoice');
 
 Route::get('/c/{category_slug}/{short_url}', [\App\Http\Controllers\FrontendController::class, 'category'])->name('category.index');
 Route::get('/p/{product_slug}/{short_url}/{variant?}', [\App\Http\Controllers\FrontendController::class, 'product'])->name('product.index');

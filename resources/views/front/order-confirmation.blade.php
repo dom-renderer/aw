@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="invoice-download d-flex justify-content-center gap-3">
-                <a href="#" class="btn" onclick="window.print(); return false;">Download Invoice</a>
+                <a href="{{ route('order.invoice', ['order_number' => $order->order_number]) }}" class="btn" target="_blank">Download Invoice</a>
                 @if(auth()->guard('customer')->check())
                 <a href="#" class="btn"><img src="{{ asset('front-theme/images/order-view.png') }}" alt="">View My Orders</a>
                 @endif

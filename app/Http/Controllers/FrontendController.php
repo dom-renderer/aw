@@ -1942,4 +1942,31 @@ class FrontendController extends Controller
 
         return view('front.order-confirmation', compact('order', 'payment'));
     }
+
+    public function downloadInvoice(Request $request, $order_number)
+    {
+        $order = Order::with([
+            'items.product.primaryImage',
+            'items.variant.variantImage',
+            'customer',
+            'location.country',
+            'location.state',
+            'location.city',
+            'warehouse'
+        ])->where('order_number', $order_number)->firstOrFail();
+
+        $loggedIn = auth()->guard('customer')->check();
+        if ($loggedIn) {
+            $customerId = auth()->guard('customer')->id();
+            if ($order->customer_id != $customerId) {
+                abort(403, 'Unauthorized access to this order');
+            }
+        }
+
+        $payment = \App\Models\Payment::where('order_id', $order->id)->latest()->first();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('front.invoice-pdf', compact('order', 'payment'));
+        
+        return $pdf->download('invoice-' . $order->order_number . '.pdf');
+    }
 }
