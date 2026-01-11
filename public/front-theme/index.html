@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjo-Home</title>
+    <link rel="stylesheet" href="css/boostrap-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.6/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="fonts/">
+</head>
+
+<body>
+    <!-- header content Start-------------------------------------------->
+    <header>
+        <nav class="navbar navbar-expand-lg px-0 py-2">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="images/aw-log.svg" class="h-8" alt="...">
+                </a>
+                <!-- Navbar toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <!-- Nav -->
+                    <div class="navbar-nav mx-lg-auto head-middle">
+                        <form action="" class="w-100">
+                            <div class="header__srh-box">
+                                <div class="srh-left">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                    <input type="text" placeholder="Search">
+                                </div>
+                                <div class="srh-rgt">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                       </form>
+                    </div>
+                    <!-- Right navigation -->
+                    <div class="navbar-nav ms-lg-4">
+                        <div class="navbar-nav mx-lg-auto">
+                            <a class="nav-item nav-link cart" href="#">
+                                <img src="images/cart.svg" alt="">
+                                <span>33</span>
+                            </a>
+                            <a class="nav-item nav-link cart notification-clk" href="#">
+                                <img src="images/notification.svg" alt="">
+                                <span>11</span>
+                            </a>
+                            <a class="nav-item nav-link user-admn" href="">
+                                <span>
+                                    <img src="images/user-admin.svg" alt="">
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="menu-account">
+            <div class="container">
+                <h3 class="h-24">Your Account</h3>
+                <div class="act-switch">
+                    <p>Switch Accounts</p>
+                    <p>Sign Out</p>
+                </div>
+                <ul>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-1.svg" alt="">
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-2.svg" alt="">
+                            <span>Order History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-3.svg" alt="">
+                            <span>Wishlist</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-4.svg" alt="">
+                            <span>Addresses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-5.svg" alt="">
+                            <span>Profile Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-6.svg" alt="">
+                            <span>Invoices</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-7.svg" alt="">
+                            <span>Payment Methods</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-8.svg" alt="">
+                            <span>Notifications</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="btn">
+                            <img src="images/menuicon-9.svg" alt="">
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="notification">
+            <div class="notification-block">
+                <h3 class="h-24">Notifications</h3>
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                    All
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="unread-tab" data-bs-toggle="tab" data-bs-target="#unread" type="button" role="tab">
+                    Unread
+                    </button>
+                </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                <!-- All Tab -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                        <ul class="notification-list">
+                        <li class="notification-item">
+                            <img src="images/nitficatio9m.svg" alt="">
+                            <div>
+                                <div class="notification-text">Your order has been processed.</div>
+                                <div class="notification-time">5m</div>
+                            </div>
+                            <span class="notification-dot"></span>
+                        </li>
+                        <li class="notification-item">
+                            <img src="images/nitficatio9m.svg" alt="">
+                            <div>
+                            <div class="notification-text">Your order shipped.</div>
+                            <div class="notification-time">6d</div>
+                            </div>
+                        </li>
+                        <li class="notification-item">
+                            <img src="images/nitficatio9m.svg" alt="">
+                            <div>
+                            <div class="notification-text">Check out our Summer Sale</div>
+                            <div class="notification-time">12d</div>
+                            </div>
+                        </li>
+                        <li class="notification-item">
+                            <img src="images/nitficatio9m.svg" alt="">
+                            <div>
+                                <div class="notification-text">20% off all OKF products!</div>
+                                <div class="notification-time">5m</div>
+                            </div>
+                        </li>
+                        </ul>
+                    </div>
+
+                    <!-- Unread Tab -->
+                    <div class="tab-pane fade" id="unread" role="tabpanel">
+                        <ul class="notification-list">
+                        <li class="notification-item">
+                            <img src="images/nitficatio9m.svg" alt="">
+                            <div>
+                                <div class="notification-text">Your order has been processed.</div>
+                                <div class="notification-time">5m</div>
+                            </div>
+                            <span class="notification-dot"></span>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-content">
+            <div class="cart-item">
+                <h3>Subtotal</h3>
+                <p class="inr-red">INR 116.45</p>
+                <a href="" class="btn cart-btn d-block">Go to Cart</a>
+            </div>
+            <div class="border-cart">
+                <div class="cart-product">
+                    <img src="images/food-img4.png" alt="">
+                    <p class="inr-blck">INR 116.45</p>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group quantity-group">
+                    <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                    <input type="text" class="form-control text-center quantity-value" value="1" id="quantity" readonly="">
+                    <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- header content End-------------------------------------------->
+   
+<!-- hero Section Start -->
+<section class="hero">
+    <div class="hero-block">
+        <div class="hero-box">
+        <!-- change "carousel slide" to "carousel slide carousel-fade" -->
+        <div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="hero-caro firt-hr">
+                        <img src="images/hero-img1.png" class="d-block w-100" alt="...">
+                        <div class="hero-content">
+                            <h2>Summer Wholesale Deals</h2>
+                            <p>Up to 40% off on bulk orders</p>
+                            <a href="" class="btn hero-btn">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="hero-caro">
+                        <img src="images/hero-img2.png" class="d-block w-100" alt="...">
+                        <div class="hero-car-2">
+                            <div class="hero-content">
+                            <div class="container">
+                                <h2 class="care2">
+                                <span class="spn-blue">Light, breathable,</span> <br>
+                                <span class="spn-pink">better than ever!</span>
+                                </h2>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="hero-caro">
+                    <img src="images/hero-img3.png" class="d-block w-100" alt="...">
+                        <div class="hero-car-3">
+                            <div class="hero-content">
+                            <div class="container">
+                                <div class="row">
+                                <div class="col-lg-5"></div>
+                                <div class="col-xxl-7 col-xl-12 col-lg-12 col-md-12 ">
+                                    <div class="box-care">
+                                    <img src="images/hero-3logo.png" alt="">
+                                    <h2>Intense, deep notes and <br>a unique character.</h2>
+                                    <p><a href="">BACK IN STOCK!</a></p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="arrow-bg">
+                <img src="images/arro-right.svg" alt="">
+            </span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="arrow-bg">
+                <img src="images/arrow-left.svg" alt="">
+            </span>
+            </button>
+        </div>
+        </div>
+        <div class="hero-bottom">
+            <div class="container">
+                <div class="hero-bttom-bx">
+                    <div class="her-bx-left">
+                        <h3>Top Categories</h3>
+                    </div>
+                    <div class="her-bx-right">
+                        <a href="">
+                            View All
+                            <img src="images/right-arrow-view.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- hero Section End -->
+    
+   
+<!-- Food Content Start -->
+<section class="food">
+    <div class="food-block">
+        <div class="food-bevrage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-xl-6 col-xxl-3 col-md-12 col-sm-12">
+                        <div class="food-box">
+                            <h3 class="h-30">
+                                <span>Food & Beverage</span>
+                                <a href="">View All</a>
+                            </h3>
+                            <div class="row">
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6">
+                                    <div class="f-inbx">
+                                        <!-- <img src="images/food-img1.png" alt=""> -->
+                                         <div class="hover-slider">
+                                            <div class="products-grid" id="productsGrid">
+                                               
+                                            </div>
+                                            <p class="slow-mn">OKF Sparkling Peach D...</p>
+                                         </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/food-img2.png" alt="">
+                                        <p>Excelsior Cheese Krun...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/food-img3.png" alt="">
+                                        <p>Maretti Bruschette Chi...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/food-img4.png" alt="">
+                                        <p>Gatorade Cool Blue 828..</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xl-6 col-xxl-3 col-md-12 col-sm-12">
+                        <div class="food-box">
+                            <h3 class="h-30">Home & Kitchen</h3>
+                            <div class="row">
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/home-f1.png" alt="">
+                                        <p>Mr. Clean Magic Eraser...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/home-f2.png" alt="">
+                                        <p>Gain Ultra Clean Dishw...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/home-f3.png" alt="">
+                                        <p>Bounty Paper Towel Do...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/home-f4.png" alt="">
+                                        <p>Febreeze Air Mist Linen...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xl-6 col-xxl-3 col-md-12 col-sm-12">
+                        <div class="food-box">
+                            <h3 class="h-30">Beauty & Personal Care</h3>
+                            <div class="row">
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/beuty-f1.png" alt="">
+                                        <p>Crest Tartar Protection...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/beuty-f2.png" alt="">
+                                        <p>Herbal Essences Coco...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/beuty-f3.png" alt="">
+                                        <p>Bounty Paper Towel Do...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/beuty-f4.png" alt="">
+                                        <p>Gillette Prestobarba Ul...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xl-6 col-xxl-3 col-md-12 col-sm-12">
+                        <div class="food-box">
+                            <h3 class="h-30">Pet Supplies</h3>
+                            <div class="row">
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/pet-f1.png" alt="">
+                                        <p>True Adult Dog Food Dr...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/pet-f2.png" alt="">
+                                        <p>True Puppy Dog Food...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="f-inbx">
+                                        <img src="images/pet-f3.png" alt="">
+                                        <p>True Salmon Oil</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="food-rum">
+            <div class="container">
+                <h3 class="h-30">Rum</h3>
+                <div class="rum-block">
+                    <div class="rum-box">
+                        <img src="images/rumf1.png" alt="">
+                        <p class="p-12">Barcelo Anejo 700ml</p>
+                    </div>
+                    <div class="rum-box">
+                        <img src="images/rumf2.png" alt="">
+                        <p class="p-12">Barcelo Imperial Mizunara Cask</p>
+                    </div>
+                    <div class="rum-box">
+                        <img src="images/rumf3.png" alt="">
+                        <p class="p-12">Barcelo Imperial</p>
+                    </div>
+                    <div class="rum-box">
+                        <img src="images/rumf4.png" alt="">
+                        <p class="p-12">Barcelo Dark 700ml</p>
+                    </div>
+                    <div class="rum-box">
+                        <img src="images/rumf5.png" alt="">
+                        <p class="p-12">Barcelo Gran Anejo 700ml</p>
+                    </div>
+                    <div class="rum-box view-rm">
+                        <a href="">
+                            View All
+                            <img src="images/arrow-blue-vew.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Food Content End -->
+
+<!-- Seling-product Content Start -->
+<section class="product-section">
+    <div class="product-block pd-y50">
+        <div class="container">
+            <h2 class="h-30">
+                Top Selling Products
+                <a href="" class="view-white">
+                    View All
+                    <img src="images/view-all-white.png" alt="">
+                </a>
+            </h2>
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="product-box">
+                        <img src="images/product-1.png" class="w-100" alt="">
+                        <h3 class="h-20 mt-3 mb-3">OKF Sparkling Strawberry Drink</h3>
+                        <div class="price-bxm">
+                            <span class="text-offer">$24.99</span>
+                            <div class="bulk-div">
+                                <span>$89.99</span>
+                                <a href="" class="bulk-pr btn">Bulk Pricing</a>
+                            </div>
+                            <p class="p-18 mt-2 mb-3">Min Order: 5 boxes</p>
+                        </div>
+
+
+
+                        <!-- Wrap the button + cart replacement inside this wrapper -->
+                        <div class="cart-toggle-wrapper">
+                        <!-- Add to Cart button (can be <a> or <button>) -->
+                            <a href="" class="btn cart-btn d-block" id="addToCartBtn">Add to Cart</a>
+
+                            <!-- Replacement cart UI that appears after clicking Add to Cart -->
+                            <div class="cart-home" aria-hidden="true">
+                                <div class="cart-all-dtl">
+                                    <div class="col-auto">
+                                        <div class="input-group quantity-group">
+                                        <button class="btn btn-outline-secondary btn-minus" type="button">−</button>
+                                        <input type="text" class="form-control text-center quantity-value" value="1" id="quantity" readonly>
+                                        <button class="btn btn-outline-secondary btn-plus" type="button">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="cart-pra">
+                                        <p class="h-24 price-value">$89.99</p>
+                                        <p class="p-18">Total</p>
+                                    </div>
+                                    <div class="cart-delete" role="button" title="Remove from cart">
+                                        <img src="images/cart-delete.png" alt="Delete" class="cart-delete-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="product-box">
+                        <img src="images/product-2.png" class="w-100" alt="">
+                        <h3 class="h-20 mt-3 mb-3">Gain Detergent Moonlight Breeze 113oz</h3>
+                        <div class="price-bxm">
+                            <span class="text-offer">$24.99</span>
+                            <div class="bulk-div">
+                                <span>$89.99</span>
+                                <a href="" class="bulk-pr btn">Bulk Pricing</a>
+                            </div>
+                            <p class="p-18 mt-2 mb-3">Min Order: 5 boxes</p>
+                        </div>
+                        <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="product-box">
+                        <img src="images/product-3.png" class="w-100" alt="">
+                        <h3 class="h-20 mt-3 mb-3">Bounty Paper Towel Double Pack</h3>
+                        <div class="price-bxm">
+                            <span class="text-offer">$24.99</span>
+                            <div class="bulk-div">
+                                <span>$89.99</span>
+                                <a href="" class="bulk-pr btn">Bulk Pricing</a>
+                            </div>
+                            <p class="p-18 mt-2 mb-3">Min Order: 5 boxes</p>
+                        </div>
+                        <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="product-box">
+                        <img src="images/product-4.png" class="w-100" alt="">
+                        <h3 class="h-20 mt-3 mb-3">Goli Ashwaganda Gummies</h3>
+                        <div class="price-bxm">
+                            <span class="text-offer">$24.99</span>
+                            <div class="bulk-div">
+                                <span>$89.99</span>
+                                <a href="" class="bulk-pr btn">Bulk Pricing</a>
+                            </div>
+                            <p class="p-18 mt-2 mb-3">Min Order: 5 boxes</p>
+                        </div>
+                        <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Seling-product Content End -->
+<!-- Recent Section Start -->
+<section class="recent-ml">
+    <div class="recent-block pd-y50">
+        <div class="container">
+            <h2 class="h-30">
+                Recently Viewed
+                <a href="" class="view-black">
+                    View All
+                    <img src="images/view-blue-arrow.svg" alt="">
+                </a>
+            </h2>
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/recent-p1.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">True Adult Dog Food Dried Pebbles</h3>
+                            <p class="pr-bold mb-3">$25.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/recent-p2.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">True Salmon Oil</h3>
+                            <p class="pr-bold mb-3">$89.99</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/recent-p3.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Barcelo Imperial Mizunara Cask</h3>
+                            <p class="pr-bold mb-3">$322.80</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-6 col-xxl-3 col-md-6 col-sm-6">
+                    <div class="recent-box">
+                        <img class="w-100" src="images/recent-p4.png" alt="">
+                        <div class="rc-bx-in">
+                            <h3 class="h-20 mb-3">Real Ginger Infused Syrup</h3>
+                            <p class="pr-bold mb-3">$15.20</p>
+                            <a href="" class="btn cart-btn d-block">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Subscribe Section Start -->
+<section class="sub-section">
+    <div class="sub-block">
+        <div class="container">
+            <div class="sub-box text-center">
+                <h2 class="h-30">Stay Updated</h2>
+                <p class="p-20 py-3">Sign up for updates and exclusive wholesale offers</p>
+                <div class="sub-serch-box">
+                    <input type="text" placeholder="Your email address">
+                    <button class="btn-sub btn">Subscribe</button>
+                </div>
+                <p class="p-18">By subscribing , you agree to receive marketing communications from Anjo Wholesale</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Subscribe Section End -->
+<!-- Recent Section End --> 
+
+
+
+
+<footer>
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                    <div class="footer-box">
+                        <h3>About Anjo Wholesale</h3>
+                        <p class="mt-2 mb-2">Mon-Fri 8AM-4PM</p>
+                        <div class="ftr-whl">
+                            <p>Our goods are delivered at no <br>  extra charge once our delivery <br> requirements are met! Give us a <br> call to find out more information.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                    <div class="footer-box">
+                        <h3>Phone</h3>
+                        <div class="ftor-call">
+                            <p>(268) 480-3080 (AR)</p>
+                            <p>(268) 736 5814 (Whatsapp)</p>
+                            <p>(268) 480-3046/7 (Coolidge)</p>
+                            <p>(268) 480-3086 (Fax)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                    <div class="footer-box">
+                        <h3>Email</h3>
+                        <ul class="ftr-ul">
+                            <li><a href="">anjo.w@candw.ag</a></li>
+                            <li><a href="">​HR@anjowholesale.com</a></li>
+                            <li><a href="">info@anjowholesale.com</a></li>
+                            <li><a href="">mario.winter@anjowholesale.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg- 3col-lg-6 col-xl-3 col-md-6 col-xxl-3">
+                    <div class="footer-box">
+                        <h3>P.O. Box</h3>
+                        <div class="ftr-po">
+                            Anjo Wholesale <br>
+                            P.O. Box 104 St. John's, <br> Antigua & Barbuda
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xl-2">
+                    <div class="ftr-social">
+                        <a href=""><img src="images/Facebook.svg" alt=""></a>
+                        <a href=""><img src="images/Instagram.svg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-xl-10">
+                    <ul>
+                        <li>
+                            <img src="images/Subtract.svg" alt="">
+                            Anjo Wholesale
+                        </li>
+                        <li>American Road St. John's, Antigua & Barbuda</li>
+                        <li>Coolidge, Corner of Sir George Walter Highway & Powells Main Road</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="js/Jquery-min.js"></script>
+    <script src="js/bootstrap-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    
+    </script>
+    <script>
+        const products = [
+            {
+             
+                price: "$299",
+                images: [
+                    "images/food-img2.png",
+                    "images/food-img3.png",
+                    "images/food-img4.png",
+                    "images/food-img4.png"
+                ]
+            },
+           
+        ];
+
+        const productsGrid = document.getElementById('productsGrid');
+        const slideshowIntervals = {};
+
+        products.forEach((product, index) => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.dataset.productIndex = index;
+
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'product-image-container';
+
+            product.images.forEach((imgSrc, imgIndex) => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = `product-image ${imgIndex === 0 ? 'active' : ''}`;
+                img.alt = product.name;
+                imageContainer.appendChild(img);
+            });
+
+            const indicatorContainer = document.createElement('div');
+            indicatorContainer.className = 'image-indicator';
+            product.images.forEach((_, imgIndex) => {
+                const dot = document.createElement('div');
+                dot.className = `indicator-dot ${imgIndex === 0 ? 'active' : ''}`;
+                indicatorContainer.appendChild(dot);
+            });
+            imageContainer.appendChild(indicatorContainer);
+
+            const productInfo = document.createElement('div');
+            productInfo.className = 'product-info';
+            productInfo.innerHTML = `
+                
+                <div class="wish-list">
+                    <button class="btn">
+                        <img src="images/menuicon-3.svg" alt="">
+                        Wishlist
+                    </button>
+                </div>
+            `;
+
+            productCard.appendChild(imageContainer);
+            productCard.appendChild(productInfo);
+            productsGrid.appendChild(productCard);
+
+            let currentImageIndex = 0;
+            let hoverTimeout = null;
+
+            productCard.addEventListener('mouseenter', () => {
+                const images = imageContainer.querySelectorAll('.product-image');
+                const dots = indicatorContainer.querySelectorAll('.indicator-dot');
+                
+                const changeImage = () => {
+                    images[currentImageIndex].classList.remove('active');
+                    dots[currentImageIndex].classList.remove('active');
+                    
+                    currentImageIndex = (currentImageIndex + 1) % images.length;
+                    
+                    images[currentImageIndex].classList.add('active');
+                    dots[currentImageIndex].classList.add('active');
+                };
+                
+                hoverTimeout = setTimeout(() => {
+                    changeImage();
+                    slideshowIntervals[index] = setInterval(changeImage, 1000); // 1s
+                }, 400);
+            });
+
+            productCard.addEventListener('mouseleave', () => {
+                clearTimeout(hoverTimeout);
+                clearInterval(slideshowIntervals[index]);
+                
+                const images = imageContainer.querySelectorAll('.product-image');
+                const dots = indicatorContainer.querySelectorAll('.indicator-dot');
+                
+                images[currentImageIndex].classList.remove('active');
+                dots[currentImageIndex].classList.remove('active');
+                
+                currentImageIndex = 0;
+                
+                images[0].classList.add('active');
+                dots[0].classList.add('active');
+            });
+        });
+    </script>
+  
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userAdmin = document.querySelector(".user-admn");
+            const menuAccount = document.querySelector(".menu-account");
+
+            userAdmin.addEventListener("click", function (e) {
+            e.preventDefault();
+            menuAccount.classList.toggle("active");
+            });
+
+            // Optional: click outside to close
+            document.addEventListener("click", function (e) {
+                if (!menuAccount.contains(e.target) && !userAdmin.contains(e.target)) {
+                    menuAccount.classList.remove("active");
+                }
+            });
+        });
+        
+
+
+        document.querySelectorAll('.product-card').forEach(card => {
+        const wishlist = card.querySelector('.wish-list');
+
+        card.addEventListener('mouseenter', () => {
+            wishlist.classList.add('show');
+            setTimeout(() => wishlist.classList.add('animate'), 10);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            wishlist.classList.remove('animate');
+            wishlist.addEventListener('transitionend', function handler() {
+            wishlist.classList.remove('show');
+            wishlist.removeEventListener('transitionend', handler);
+            });
+        });
+        });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userAdmin = document.querySelector(".notification-clk");
+        const menuAccount = document.querySelector(".notification");
+
+        userAdmin.addEventListener("click", function (e) {
+        e.preventDefault();
+        menuAccount.classList.toggle("active");
+        });
+
+        // Optional: click outside to close
+        document.addEventListener("click", function (e) {
+            if (!menuAccount.contains(e.target) && !userAdmin.contains(e.target)) {
+                menuAccount.classList.remove("active");
+            }
+        });
+    }); 
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const addToCartBtns = document.querySelectorAll(".cart-btn"); // supports multiple Add to Cart buttons
+        const cartPanel = document.getElementById("cartPanel");
+        const closeCart = document.getElementById("closeCart");
+
+        // Ensure initial state: panel not visible in layout
+        if (!cartPanel.classList.contains('hidden') && !cartPanel.classList.contains('active')) {
+            cartPanel.classList.add('hidden'); // start hidden (display:none)
+        }
+
+        // Show panel: remove .hidden, force reflow, then add .active to animate
+        function showPanel() {
+            cartPanel.classList.remove('hidden'); // make renderable
+            // Force reflow so the browser sees the element before adding .active
+            void cartPanel.offsetWidth;
+            cartPanel.classList.add('active');
+        }
+
+        // Hide panel: remove .active to trigger transition, then add .hidden after transition ends
+        function hidePanel() {
+            // If already hidden, nothing to do
+            if (cartPanel.classList.contains('hidden') || !cartPanel.classList.contains('active')) return;
+
+            // Remove visible class -> triggers CSS transition
+            cartPanel.classList.remove('active');
+
+            // Listen for transitionend (only once) then hide from layout
+            const onTransitionEnd = function (e) {
+            // only react to transform (guard against nested children transitions)
+            if (e.target === cartPanel && (e.propertyName === 'transform' || e.propertyName === 'opacity')) {
+                cartPanel.classList.add('hidden'); // remove from layout after animation
+                cartPanel.removeEventListener('transitionend', onTransitionEnd);
+            }
+            };
+            cartPanel.addEventListener('transitionend', onTransitionEnd);
+        }
+
+        // Hook up Add to Cart buttons (supports more than one)
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPanel();
+            });
+        });
+
+        // Close button
+        if (closeCart) {
+            closeCart.addEventListener('click', (e) => {
+            e.preventDefault();
+            hidePanel();
+            });
+        }
+
+        // Close on clicking outside the panel
+        document.addEventListener('click', (e) => {
+            if (cartPanel.classList.contains('hidden')) return;
+            const clickedInside = cartPanel.contains(e.target);
+            const clickedAddBtn = e.target.closest('.cart-btn');
+            if (!clickedInside && !clickedAddBtn) {
+            hidePanel();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !cartPanel.classList.contains('hidden')) {
+            hidePanel();
+            }
+        });
+    });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Support multiple wrappers
+  const wrappers = document.querySelectorAll('.cart-toggle-wrapper');
+
+  wrappers.forEach(wrapper => {
+    const addBtn = wrapper.querySelector('.cart-btn');
+    const cartHome = wrapper.querySelector('.cart-home');
+    const deleteBtn = wrapper.querySelector('.cart-delete');
+    const btnPlus = wrapper.querySelector('.btn-plus');
+    const btnMinus = wrapper.querySelector('.btn-minus');
+    const qtyInput = wrapper.querySelector('.quantity-value');
+
+    // Safety: if button or cartHome missing, skip
+    if (!addBtn || !cartHome) return;
+
+    // Prevent default navigation for anchor
+    addBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // stop document click handler from immediately closing
+      // toggle active: show cart replacement
+      wrapper.classList.add('active');
+      cartHome.setAttribute('aria-hidden', 'false');
+      // focus management (optional) — focus the plus button for keyboard users
+      if (btnPlus) btnPlus.focus();
+      // Add a short delay to allow outside-click listener to initialize safely
+    });
+
+    // Clicking the delete icon returns to Add button
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wrapper.classList.remove('active');
+        cartHome.setAttribute('aria-hidden', 'true');
+      });
+    }
+
+    // Click outside -> revert
+    document.addEventListener('click', (e) => {
+      // if wrapper is not active, nothing to do
+      if (!wrapper.classList.contains('active')) return;
+
+      // if the click is inside the wrapper, ignore
+      if (wrapper.contains(e.target)) return;
+
+      // else hide the cart-home and show the button again
+      wrapper.classList.remove('active');
+      cartHome.setAttribute('aria-hidden', 'true');
+    });
+
+    // Support Escape key to close when active
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && wrapper.classList.contains('active')) {
+        wrapper.classList.remove('active');
+        cartHome.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Quantity buttons (increment / decrement)
+    if (btnPlus && btnMinus && qtyInput) {
+      btnPlus.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let v = parseInt(qtyInput.value || '1', 10);
+        if (isNaN(v)) v = 1;
+        qtyInput.value = v + 1;
+      });
+
+      btnMinus.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let v = parseInt(qtyInput.value || '1', 10);
+        if (isNaN(v)) v = 1;
+        if (v > 1) qtyInput.value = v - 1;
+      });
+    }
+  });
+});
+</script>
+
+
+</body>
+
+</html>
